@@ -1,0 +1,3846 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jel>
+	<admin creation="Mon May 16 17:00:20 EDT 2011" xsdversion="1.0.0" version="1.0.0" />
+	<jelclass superclass="Object" visibility="public" package="mapproxy" superclassfulltype="java.lang.Object" fulltype="mapproxy.Main" type="Main">
+		<comment>
+			<description>Command line app used to test MapProxy.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="Main">
+				<params>
+					<param name="args" fulltype="java.lang.String[]" type="String" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.lang.Exception" type="Exception" />
+				</exceptions>
+			</constructor>
+			<method static="true" visibility="public" name="main" fulltype="void" type="void">
+				<comment>
+					<description>Entry point for the application. Accepts command line arguments to...</description>
+					<attribute name="@param">
+						<description>args the command line arguments</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="args" comment="the command line arguments" fulltype="java.lang.String[]" type="String" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.lang.Exception" type="Exception" />
+				</exceptions>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="TileSource" visibility="public" package="mapproxy.arcgis.cache" superclassfulltype="mapproxy.core.cache.TileSource" fulltype="mapproxy.arcgis.cache.MapTileSource" type="MapTileSource">
+		<comment>
+			<description>This TileSource retrieves new tiles from a ArcGIS server.
+   This class is able to request maps that are larger than one tile and split
+   the large map into multiple tiles. The meta_size defines how many tiles
+   should be generated per request.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="MapTileSource">
+				<comment>
+					<description>Creates a new instance of the WMSTileSource.</description>
+					<attribute name="@param">
+						<description>grid the associated grid</description>
+					</attribute>
+					<attribute name="@param">
+						<description>clients MapClient for each distinct WMS source
+   [&quot;mapproxy.wms.client.MapClient&quot;,...]</description>
+					</attribute>
+					<attribute name="@param">
+						<description>format internal image format. if not set use format from first WMS
+   client</description>
+					</attribute>
+					<attribute name="@param">
+						<description>meta_size the number of tiles to get per request (x_size, y_size)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>meta_buffer the buffer size in pixel that is added to each grid.
+   the number is added to all four borders. this buffer may improve the
+   handling of labels overlapping (meta)tile borders.
+        :type meta_buffer: pixel</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="grid" comment="the associated grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="clients" comment="MapClient for each distinct WMS source
+   [&quot;mapproxy.wms.client.MapClient&quot;,...]" fulltype="mapproxy.arcgis.client.MapClient[]" type="MapClient" />
+					<param name="format" comment="internal image format. if not set use format from first WMS
+   client" fulltype="java.lang.String" type="String" />
+					<param name="meta_buffer" comment="the buffer size in pixel that is added to each grid.
+   the number is added to all four borders. this buffer may improve the
+   handling of labels overlapping (meta)tile borders.
+        :type meta_buffer: pixel" fulltype="int" type="int" />
+					<param name="meta_size" comment="the number of tiles to get per request (x_size, y_size)" fulltype="int[]" type="int" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="MapTileSource">
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="clients" fulltype="mapproxy.arcgis.client.MapClient[]" type="MapClient" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="MapTileSource">
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="client" fulltype="mapproxy.arcgis.client.MapClient" type="MapClient" />
+				</params>
+			</constructor>
+			<method visibility="public" name="id" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="lock_filename" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="create_tile" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+					<param name="tile_map" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.arcgis.client" superclassfulltype="java.lang.Object" fulltype="mapproxy.arcgis.client.MapClient" type="MapClient">
+		<comment>
+			<description>Used to execute an ArcGIS MapServer export image requests. 
+
+   Loosely based on the WMSClient class.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="MapClient">
+				<comment>
+					<description>Creates a new instance of ArcServerClient.</description>
+				</comment>
+				<params>
+					<param name="request_template" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</constructor>
+			<method visibility="public" name="get_map" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Used to convert a WMS GetMap Request into a ArcGIS MapServer export image
+  request.</description>
+				</comment>
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="get_map" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="size" fulltype="int[]" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.arcgis.server" superclassfulltype="java.lang.Object" fulltype="mapproxy.arcgis.server.MapServer" type="MapServer">
+		<comment>
+			<description>Used to generate responses that mimic ArcGIS Server</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="MapServer">
+				<comment>
+					<description>Creates a new instance of MapService.</description>
+				</comment>
+				<params>
+					<param name="service" fulltype="mapproxy.core.Service" type="Service" />
+				</params>
+			</constructor>
+			<method visibility="public" name="getWSDL" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Used to return an ArcGIS style WSDL</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getServiceDescriptions" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getMessageVersion" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getFolders" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getMessageFormats" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getDefaultMapName" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getSupportedImageReturnTypes" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="hasSingleFusedMapCache" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="isFixedScaleMap" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getTokenServiceURL" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getTileCacheInfo" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getTileImageInfo" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getServerInfo" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getCapabilities" fulltype="mapproxy.core.Capabilities" type="Capabilities" />
+			<method visibility="public" name="getLegendInfo" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getExportMapImageResponse" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Contructs an XML response to an ExportMap image request. The document
+   contains a link to a WMS service.</description>
+				</comment>
+				<params>
+					<param name="url" fulltype="javaxt.utils.URL" type="javaxt.utils.URL" />
+					<param name="layers" fulltype="java.lang.String" type="String" />
+					<param name="bbox" fulltype="java.lang.String" type="String" />
+					<param name="wkt" fulltype="java.lang.String" type="String" />
+					<param name="width" fulltype="java.lang.String" type="String" />
+					<param name="height" fulltype="java.lang.String" type="String" />
+					<param name="format" fulltype="java.lang.String" type="String" />
+					<param name="returnType" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.config" superclassfulltype="java.lang.Object" fulltype="mapproxy.config.Options" type="Options">
+		<comment>
+			<description>Dictionary with attribute style access.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="Options">
+				<comment>
+					<description>Creates a new instance of Options.</description>
+				</comment>
+			</constructor>
+			<method visibility="public" name="get" fulltype="Value" type="Value">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="set" fulltype="void" type="void">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="value" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.config" superclassfulltype="java.lang.Object" fulltype="mapproxy.config.Config" type="Config">
+		<comment>
+			<description>Provides static methods to initialize and access config settings.</description>
+		</comment>
+		<fields>
+			<field static="true" visibility="public" name="options" fulltype="mapproxy.config.Options" type="Options" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="Config" />
+			<method static="true" visibility="public" name="base_config" fulltype="mapproxy.config.Options" type="Options" />
+			<method static="true" visibility="public" name="load" fulltype="void" type="void">
+				<params>
+					<param name="xml" fulltype="org.w3c.dom.Document" type="Document" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.lang.Exception" type="Exception" />
+				</exceptions>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.TileSeeder" type="TileSeeder">
+		<implements>
+			<interface fulltype="java.lang.Runnable" type="Runnable" />
+		</implements>
+		<comment>
+			<description>Thread used to generate a tile cache</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileSeeder">
+				<comment>
+					<description>Creates a new instance of TileSeeder.</description>
+				</comment>
+			</constructor>
+			<method static="true" visibility="public" name="addLayer" fulltype="mapproxy.core.Status" type="Status">
+				<comment>
+					<description>Used to add a layer for the TileSeeder to process.</description>
+				</comment>
+				<params>
+					<param name="layer" fulltype="mapproxy.core.Layer" type="Layer" />
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="levels" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="run" fulltype="void" type="void">
+				<comment>
+					<description>Used to process tiles added to the queue.</description>
+				</comment>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.Status" type="Status">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="Status">
+				<comment>
+					<description>Creates a new instance of Status.</description>
+				</comment>
+			</constructor>
+			<method visibility="protected" name="setTotal" fulltype="void" type="void">
+				<params>
+					<param name="totalTiles" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="getLastUpdate" fulltype="long" type="long" />
+			<method visibility="public" name="getPercentComplete" fulltype="double" type="double" />
+			<method visibility="public" name="isComplete" fulltype="boolean" type="boolean" />
+			<method visibility="protected" name="updateTileCount" fulltype="void" type="void" />
+			<method visibility="public" name="getNumTilesProcessed" fulltype="int" type="int" />
+			<method visibility="public" name="getTotalTiles" fulltype="int" type="int" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.SRS" type="SRS">
+		<comment>
+			<description>This class represents a Spatial Reference System.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="crs" fulltype="CoordinateReferenceSystem" type="CoordinateReferenceSystem" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="SRS">
+				<comment>
+					<description>Create a new SRS with the given `srs_code` code.</description>
+				</comment>
+				<params>
+					<param name="srs_code" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="SRS">
+				<params>
+					<param name="srs" fulltype="int" type="int" />
+				</params>
+			</constructor>
+			<method visibility="public" name="isGeographic" fulltype="boolean" type="boolean" />
+			<method static="true" visibility="public" name="get_epsg_num" fulltype="int" type="int">
+				<comment>
+					<description>get_epsg_num(&apos;ePsG:4326&apos;) returns 4326
+  get_epsg_num(4313) returns 4313
+  get_epsg_num(&apos;31466&apos;) returns 31466</description>
+				</comment>
+				<params>
+					<param name="epsg_code" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="transform_to" fulltype="java.util.ArrayList" type="ArrayList">
+				<comment>
+					<description>:type points: ``(x, y)`` or ``[(x1, y1), (x2, y2), etc]``
+
+        &gt;&gt;&gt; srs1 = SRS(4326)
+        &gt;&gt;&gt; srs2 = SRS(900913)
+        &gt;&gt;&gt; [str(round(x, 5)) for x in srs1.transform_to(srs2, (8.22, 53.15))]
+        [&apos;915046.21432&apos;, &apos;7010792.20171&apos;]
+        &gt;&gt;&gt; srs1.transform_to(srs1, (8.25, 53.5))
+        (8.25, 53.5)
+        &gt;&gt;&gt; [(str(round(x, 5)), str(round(y, 5))) for x, y in
+        ...  srs1.transform_to(srs2, [(8.2, 53.1), (8.22, 53.15), (8.3, 53.2)])]
+        ... #doctest: +NORMALIZE_WHITESPACE
+        [(&apos;912819.8245&apos;, &apos;7001516.67745&apos;),
+         (&apos;915046.21432&apos;, &apos;7010792.20171&apos;),
+         (&apos;923951.77358&apos;, &apos;7020078.53264&apos;)]</description>
+				</comment>
+				<params>
+					<param name="other_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="points" fulltype="java.util.ArrayList" type="ArrayList" />
+				</params>
+			</method>
+			<method visibility="public" name="transform_bbox_to" fulltype="double[]" type="double">
+				<comment>
+					<description>:param with_points: the number of points to use for the transformation.
+            A bbox transformation with only two or four points may cut off some
+            parts due to distortions.
+
+        &gt;&gt;&gt; [&apos;%.3f&apos; % x for x in
+        ...  SRS(4326).transform_bbox_to(SRS(900913), (-180.0, -90.0, 180.0, 90.0))]
+        [&apos;-20037508.343&apos;, &apos;-147730762.670&apos;, &apos;20037508.343&apos;, &apos;147730758.195&apos;]
+        &gt;&gt;&gt; [&apos;%.5f&apos; % x for x in
+        ...  SRS(4326).transform_bbox_to(SRS(900913), (8.2, 53.1, 8.3, 53.2))]
+        [&apos;912819.82450&apos;, &apos;7001516.67745&apos;, &apos;923951.77358&apos;, &apos;7020078.53264&apos;]
+        &gt;&gt;&gt; SRS(4326).transform_bbox_to(SRS(4326), (8.25, 53.0, 8.5, 53.75))
+        (8.25, 53.0, 8.5, 53.75)</description>
+				</comment>
+				<params>
+					<param name="other_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="with_points" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="transform_bbox_to" fulltype="double[]" type="double">
+				<params>
+					<param name="other_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="bbox" fulltype="double[]" type="double" />
+				</params>
+			</method>
+			<method visibility="public" name="align_bbox" fulltype="double[]" type="double">
+				<comment>
+					<description>Align bbox to reasonable values to prevent errors in transformations.
+   E.g. transformations from EPSG:4326 with lat=90 or -90 will fail, so
+   we subtract a tiny delta.
+
+   At the moment only EPSG:4326 bbox will be modifyed.
+   &lt;pre&gt;
+        &gt;&gt;&gt; SRS(4326).align_bbox((-180, -90, 180, 90))
+        (-180, -89.999999990000006, 180, 89.999999990000006)
+   &lt;/pre&gt;</description>
+				</comment>
+				<params>
+					<param name="bbox" fulltype="double[]" type="double" />
+				</params>
+			</method>
+			<method visibility="public" name="is_latlong" fulltype="boolean" type="boolean">
+				<comment>
+					<description>Unused method. Referenced in the mapproxy.wms.layer.MultiLayer class
+
+        &gt;&gt;&gt; SRS(4326).is_latlong
+        True
+        &gt;&gt;&gt; SRS(31466).is_latlong
+        False</description>
+				</comment>
+			</method>
+			<method visibility="public" name="generate_envelope_points" fulltype="java.util.ArrayList" type="ArrayList">
+				<comment>
+					<description>Generates points that form a linestring around a given bbox.</description>
+					<attribute name="@param">
+						<description>bbox: bbox to generate linestring for</description>
+					</attribute>
+					<attribute name="@param">
+						<description>n: the number of points to generate around the bbox
+
+
+    &gt;&gt;&gt; generate_envelope_points((10.0, 5.0, 20.0, 15.0), 4)
+    [(10.0, 5.0), (20.0, 5.0), (20.0, 15.0), (10.0, 15.0)]
+    &gt;&gt;&gt; generate_envelope_points((10.0, 5.0, 20.0, 15.0), 8)
+    ... #doctest: +NORMALIZE_WHITESPACE
+    [(10.0, 5.0), (15.0, 5.0), (20.0, 5.0), (20.0, 10.0),\
+     (20.0, 15.0), (15.0, 15.0), (10.0, 15.0), (10.0, 10.0)]</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="n" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="calculate_bbox" fulltype="double[]" type="double">
+				<comment>
+					<description>Calculates the bbox of a list of points.
+   &lt;pre&gt;
+        &gt;&gt;&gt; calculate_bbox([(-5, 20), (3, 8), (99, 0)])
+        (-5, 0, 99, 20)
+   &lt;/pre&gt;</description>
+					<attribute name="@param">
+						<description>points: list of points [(x0, y0), (x1, y2), ...]</description>
+					</attribute>
+					<attribute name="@returns:">
+						<description>bbox of the input points.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="points" fulltype="java.util.List" type="List" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="bbox_equals" fulltype="boolean" type="boolean">
+				<comment>
+					<description>Compares two bbox and checks if they are equal, or nearly equal.</description>
+					<attribute name="@param">
+						<description>x_delta how precise the comparison should be. Should be reasonable
+ small, like a tenth of a pixle :type x_delta: bbox units
+    &lt;pre&gt;
+    &gt;&gt;&gt; src_bbox = (939258.20356824622, 6887893.4928338043,
+    ...             1095801.2374962866, 7044436.5267618448)
+    &gt;&gt;&gt; dst_bbox = (939258.20260000182, 6887893.4908000007,
+    ...             1095801.2365000017, 7044436.5247000009)
+    &gt;&gt;&gt; bbox_equals(src_bbox, dst_bbox, 61.1, 61.1)
+    True
+    &gt;&gt;&gt; bbox_equals(src_bbox, dst_bbox, 0.0001)
+    False
+    &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="src_bbox" fulltype="double[]" type="double" />
+					<param name="dst_bbox" fulltype="double[]" type="double" />
+					<param name="x_delta" comment="how precise the comparison should be. Should be reasonable
+ small, like a tenth of a pixle :type x_delta: bbox units
+    &lt;pre&gt;
+    &gt;&gt;&gt; src_bbox = (939258.20356824622, 6887893.4928338043,
+    ...             1095801.2374962866, 7044436.5267618448)
+    &gt;&gt;&gt; dst_bbox = (939258.20260000182, 6887893.4908000007,
+    ...             1095801.2365000017, 7044436.5247000009)
+    &gt;&gt;&gt; bbox_equals(src_bbox, dst_bbox, 61.1, 61.1)
+    True
+    &gt;&gt;&gt; bbox_equals(src_bbox, dst_bbox, 0.0001)
+    False
+    &lt;/pre&gt;" fulltype="double" type="double" />
+					<param name="y_delta" fulltype="double" type="double" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="bbox_equals" fulltype="boolean" type="boolean">
+				<params>
+					<param name="src_bbox" fulltype="double[]" type="double" />
+					<param name="dst_bbox" fulltype="double[]" type="double" />
+					<param name="x_delta" fulltype="double" type="double" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="make_lin_transf" returncomment="function that takes src x/y and returns dest x/y coordinates
+
+    &lt;pre&gt;
+        &gt;&gt;&gt; transf = make_lin_transf((7, 50, 8, 51), (0, 0, 500, 400))
+        &gt;&gt;&gt; transf((7.5, 50.5))
+        (250.0, 200.0)
+        &gt;&gt;&gt; transf((7.0, 50.0))
+        (0.0, 400.0)
+        &gt;&gt;&gt; transf = make_lin_transf((7, 50, 8, 51), (200, 300, 700, 700))
+        &gt;&gt;&gt; transf((7.5, 50.5))
+        (450.0, 500.0)
+    &lt;/pre&gt;" fulltype="mapproxy.core.SRS.transf" type="SRS.transf">
+				<comment>
+					<description>Create a transformation function that transforms linear between two
+  cartesian coordinate systems.</description>
+					<attribute name="@return">
+						<description>function that takes src x/y and returns dest x/y coordinates
+
+    &lt;pre&gt;
+        &gt;&gt;&gt; transf = make_lin_transf((7, 50, 8, 51), (0, 0, 500, 400))
+        &gt;&gt;&gt; transf((7.5, 50.5))
+        (250.0, 200.0)
+        &gt;&gt;&gt; transf((7.0, 50.0))
+        (0.0, 400.0)
+        &gt;&gt;&gt; transf = make_lin_transf((7, 50, 8, 51), (200, 300, 700, 700))
+        &gt;&gt;&gt; transf((7.5, 50.5))
+        (450.0, 500.0)
+    &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="src_bbox" fulltype="double[]" type="double" />
+					<param name="dst_bbox" fulltype="double[]" type="double" />
+				</params>
+			</method>
+			<method visibility="public" name="equals" fulltype="boolean" type="boolean">
+				<params>
+					<param name="obj" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String" />
+		</methods>
+		<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.SRS.transf" type="SRS.transf">
+			<methods>
+				<constructor visibility="protected" name="SRS.transf">
+					<params>
+						<param name="src_bbox" fulltype="double[]" type="double" />
+						<param name="dst_bbox" fulltype="double[]" type="double" />
+					</params>
+				</constructor>
+				<method visibility="public" name="transf" fulltype="double[]" type="double">
+					<params>
+						<param name="x" fulltype="double" type="double" />
+						<param name="y" fulltype="double" type="double" />
+					</params>
+				</method>
+			</methods>
+		</jelclass>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.SRS.transf" type="SRS.transf">
+		<methods>
+			<constructor visibility="protected" name="SRS.transf">
+				<params>
+					<param name="src_bbox" fulltype="double[]" type="double" />
+					<param name="dst_bbox" fulltype="double[]" type="double" />
+				</params>
+			</constructor>
+			<method visibility="public" name="transf" fulltype="double[]" type="double">
+				<params>
+					<param name="x" fulltype="double" type="double" />
+					<param name="y" fulltype="double" type="double" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.ServiceResponse" type="ServiceResponse">
+		<comment>
+			<description>Used to generate a response to a service request. The response might
+   include an image or a capabilities document.
+
+   Note that this class was not part of the original mapproxy baseline.</description>
+		</comment>
+		<methods>
+			<constructor visibility="protected" name="ServiceResponse">
+				<comment>
+					<description>Creates a new instance of ServiceResponse.</description>
+				</comment>
+				<params>
+					<param name="requestURL" fulltype="java.lang.String" type="String" />
+					<param name="requestBody" fulltype="java.lang.String" type="String" />
+					<param name="service" fulltype="mapproxy.core.Service" type="Service" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.lang.Exception" type="Exception" />
+				</exceptions>
+			</constructor>
+			<method visibility="public" name="getID" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns an ID for the response. This ID can be stored as key in a cache
+  map.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getContentType" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the HTTP Content-Type for the response.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getDate" fulltype="javaxt.utils.Date" type="javaxt.utils.Date">
+				<comment>
+					<description>Returns the date for the response.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getByteArray" fulltype="byte[]" type="byte">
+				<comment>
+					<description>Returns a byte array containing the response. The byte array can be used
+  in the body of an http response.</description>
+				</comment>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.ServiceException" type="ServiceException">
+		<comment>
+			<description>Used to represent a server exception. Not yet implemented or used.
+
+   Note that this class was not part of the original mapproxy baseline.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="ServiceException">
+				<comment>
+					<description>Creates a new instance of Exception.</description>
+				</comment>
+			</constructor>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.Service" type="Service">
+		<comment>
+			<description>Used to represent a web map service. Can be used to transform map requests
+   between different formats.
+
+   Note that this class was not part of the original mapproxy baseline.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="Service">
+				<comment>
+					<description>Creates a new map service from scratch. With this constructor, you can
+  create your own custom map layers, tailor the list of supported formats, 
+  etc.</description>
+					<attribute name="@param">
+						<description>name Name of this service. The name will be published in a
+ capabilities document.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>url URL associated with this service. This is typically the base
+ url for map requests.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="name" comment="Name of this service. The name will be published in a
+ capabilities document." fulltype="java.lang.String" type="String" />
+					<param name="url" comment="URL associated with this service. This is typically the base
+ url for map requests." fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="Service">
+				<comment>
+					<description>Creates a new map service using an existing map service. This constructor
+  will attempt to parse the capabilities document associated with the
+  service and instantiate local variables using parsed values (e.g. name,
+  title, description, layers, etc.)</description>
+					<attribute name="@param">
+						<description>url Fully qualified URL to a capabilities document associated with
+ an existing map service (e.g. response from an OGC WMS GetCapabilities
+ request).</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="url" comment="Fully qualified URL to a capabilities document associated with
+ an existing map service (e.g. response from an OGC WMS GetCapabilities
+ request)." fulltype="javaxt.utils.URL" type="javaxt.utils.URL" />
+				</params>
+			</constructor>
+			<method visibility="public" name="getName" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the name of the service.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="setName" fulltype="void" type="void">
+				<params>
+					<param name="name" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getProtocol" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the type of service.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getTitle" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the title of the service.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getDescription" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the description of the service.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="setDescription" fulltype="void" type="void">
+				<params>
+					<param name="description" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getURL" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the base URL for this service.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="setURL" fulltype="void" type="void">
+				<params>
+					<param name="url" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getFormats" fulltype="java.lang.String[]" type="String">
+				<comment>
+					<description>Returns a list of supported formats.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getParam" fulltype="java.lang.Object" type="Object">
+				<comment>
+					<description>Returns parameter with given key.</description>
+				</comment>
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="setParam" fulltype="void" type="void">
+				<comment>
+					<description>Sets a parameter with given key.</description>
+				</comment>
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="val" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="addLayer" fulltype="void" type="void">
+				<comment>
+					<description>Used to add a layer to the list of layers in this service.</description>
+				</comment>
+				<params>
+					<param name="layer" fulltype="mapproxy.core.Layer" type="Layer" />
+				</params>
+			</method>
+			<method visibility="public" name="getLayer" fulltype="mapproxy.core.Layer" type="Layer">
+				<comment>
+					<description>Returns a layer with a given name.</description>
+				</comment>
+				<params>
+					<param name="name" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getLayers" fulltype="mapproxy.core.Layer[]" type="Layer">
+				<comment>
+					<description>Returns a complete list of layers associated with this service.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getResponse" fulltype="mapproxy.core.ServiceResponse" type="ServiceResponse">
+				<comment>
+					<description>Used to generate a response to a service request. The response might
+  include an image or a capabilities document.</description>
+					<attribute name="@param">
+						<description>requestURL Requested URL (e.g. WMS GetMap request)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>requestBody Body of the http request. Typically contains the
+  contents of an HTTP Post request, including any SOAP messages.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="requestURL" comment="Requested URL (e.g. WMS GetMap request)" fulltype="java.lang.String" type="String" />
+					<param name="requestBody" comment="Body of the http request. Typically contains the
+  contents of an HTTP Post request, including any SOAP messages." fulltype="java.lang.String" type="String" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.lang.Exception" type="Exception" />
+				</exceptions>
+			</method>
+			<method visibility="public" name="getResponse" fulltype="mapproxy.core.ServiceResponse" type="ServiceResponse">
+				<comment>
+					<description>Used to generate a response to a service request. The response might
+  include an image or a capabilities document.</description>
+					<attribute name="@param">
+						<description>requestURL Requested URL (e.g. WMS GetMap request)</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="requestURL" comment="Requested URL (e.g. WMS GetMap request)" fulltype="java.lang.String" type="String" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.lang.Exception" type="Exception" />
+				</exceptions>
+			</method>
+			<method visibility="public" name="getCapabilities" fulltype="mapproxy.core.Capabilities" type="Capabilities">
+				<comment>
+					<description>Returns a WMS capabilities document.</description>
+				</comment>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.Python" type="Python">
+		<comment>
+			<description>Miscellaneous python functions not found in standard Java</description>
+		</comment>
+		<methods>
+			<method static="true" visibility="public" name="doubleDiv" fulltype="int" type="int">
+				<comment>
+					<description>Used to execute a double division. In Python this is normally executed
+  using a double division sign (e.g. 8.0//3). The double division sign is
+  also known as the &quot;floor&quot; division. It takes the result of the division,
+  and rounds it down to the nearest integer. If one divides two integers
+  together, the result is an integer. If one of the numbers (or both) is a
+  decimal number, the result is also a decimal number (rounded down to the
+  nearest integer).</description>
+				</comment>
+				<params>
+					<param name="a" fulltype="java.lang.Integer" type="Integer" />
+					<param name="b" fulltype="java.lang.Integer" type="Integer" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="doubleDiv" fulltype="int" type="int">
+				<params>
+					<param name="a" fulltype="java.lang.Double" type="Double" />
+					<param name="b" fulltype="java.lang.Double" type="Double" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="range" fulltype="int[]" type="int">
+				<comment>
+					<description>This is a versatile function to create lists containing arithmetic
+  progressions. It is most often used in for loops. The arguments must be
+  plain integers. If the step argument is omitted, it defaults to 1. If the
+  start argument is omitted, it defaults to 0. The full form returns a list
+  of plain integers [start,  start + step, start + 2 *  step, ...]. If step
+  is positive, the last element is the largest start + i * step  less than
+  stop; if step is negative, the last element is the smallest start + i *
+  step greater than stop. step  must not be zero (or else ValueError is
+  raised). Example:
+   &lt;pre&gt;
+        &gt;&gt;&gt; range(10)
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        &gt;&gt;&gt; range(1, 11)
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        &gt;&gt;&gt; range(0, 30, 5)
+        [0, 5, 10, 15, 20, 25]
+        &gt;&gt;&gt; range(0, 10, 3)
+        [0, 3, 6, 9]
+        &gt;&gt;&gt; range(0, -10, -1)
+        [0, -1, -2, -3, -4, -5, -6, -7, -8, -9]
+        &gt;&gt;&gt; range(0)
+        []
+        &gt;&gt;&gt; range(1, 0)
+        []
+   &lt;/pre&gt;</description>
+				</comment>
+				<params>
+					<param name="start" fulltype="int" type="int" />
+					<param name="stop" fulltype="int" type="int" />
+					<param name="step" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="range" fulltype="int[]" type="int">
+				<params>
+					<param name="start" fulltype="int" type="int" />
+					<param name="stop" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="range" fulltype="int[]" type="int">
+				<params>
+					<param name="stop" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="cstr" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="arr" fulltype="double[]" type="double" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="cstr" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="arr" fulltype="int[]" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.Point" type="Point">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="x" fulltype="double" type="double" />
+			<field visibility="public" name="y" fulltype="double" type="double" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="Point">
+				<comment>
+					<description>Creates a new instance of Point.</description>
+				</comment>
+				<params>
+					<param name="x" fulltype="double" type="double" />
+					<param name="y" fulltype="double" type="double" />
+				</params>
+			</constructor>
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="equals" fulltype="boolean" type="boolean">
+				<params>
+					<param name="obj" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.Layer" type="Layer">
+		<implements>
+			<interface fulltype="java.lang.Comparable" type="Comparable" />
+		</implements>
+		<comment>
+			<description>Used to represent a single map layer
+ 
+   Note that this class was not part of the original mapproxy baseline.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="Layer">
+				<comment>
+					<description>Creates a new instance of Layer.</description>
+				</comment>
+				<params>
+					<param name="name" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="Layer">
+				<params>
+					<param name="name" fulltype="java.lang.String" type="String" />
+					<param name="parentID" fulltype="int" type="int" />
+				</params>
+			</constructor>
+			<method visibility="public" name="getParentID" fulltype="int" type="int">
+				<comment>
+					<description>Returns the parent layer ID. The parent ID should be a positive integer.
+   Returns -1 if the parent ID is undefined or unknown.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="setParam" fulltype="void" type="void">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="val" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="getParam" fulltype="java.lang.Object" type="Object">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="addLayer" fulltype="void" type="void">
+				<comment>
+					<description>Adds a child layer</description>
+				</comment>
+				<params>
+					<param name="layer" fulltype="mapproxy.core.Layer" type="Layer" />
+				</params>
+			</method>
+			<method visibility="public" name="getLayer" fulltype="mapproxy.core.Layer" type="Layer">
+				<comment>
+					<description>Returns a child layer with a given name</description>
+				</comment>
+				<params>
+					<param name="name" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getLayers" fulltype="mapproxy.core.Layer[]" type="Layer">
+				<comment>
+					<description>Returns an array of sub-layers (children) of this layer</description>
+				</comment>
+			</method>
+			<method visibility="public" name="hasLayers" fulltype="boolean" type="boolean">
+				<comment>
+					<description>Used to indicate whether this layer has layers</description>
+				</comment>
+			</method>
+			<method visibility="public" name="addSRS" fulltype="void" type="void">
+				<comment>
+					<description>Used to update the list of supported spatial reference systems associated
+  with this layer.</description>
+				</comment>
+				<params>
+					<param name="srs" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getSRS" fulltype="java.lang.String[]" type="String">
+				<comment>
+					<description>Returns a list of supported spatial reference systems for this layer.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getName" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the name of the layer.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getDescription" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the description of the layer.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="setDescription" fulltype="void" type="void">
+				<comment>
+					<description>Used to set/update the description of the layer.</description>
+				</comment>
+				<params>
+					<param name="description" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getBBox" fulltype="mapproxy.core.BBox" type="BBox">
+				<comment>
+					<description>Returns the bbox for this layer.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="setBBox" fulltype="void" type="void">
+				<comment>
+					<description>Used to set/update the bbox for this layer.</description>
+				</comment>
+				<params>
+					<param name="bbox" fulltype="mapproxy.core.BBox" type="BBox" />
+				</params>
+			</method>
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="hashCode" fulltype="int" type="int" />
+			<method visibility="public" name="compareTo" fulltype="int" type="int">
+				<params>
+					<param name="obj" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="getImage" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Used to return an image for a given bbox.</description>
+					<attribute name="@param">
+						<description>width Image width</description>
+					</attribute>
+					<attribute name="@param">
+						<description>height Image height</description>
+					</attribute>
+					<attribute name="@param">
+						<description>format Requested format</description>
+					</attribute>
+					<attribute name="@param">
+						<description>bbox Bounding box</description>
+					</attribute>
+					<attribute name="@param">
+						<description>srs Spatial reference system associated with the bbox.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="width" comment="Image width" fulltype="int" type="int" />
+					<param name="height" comment="Image height" fulltype="int" type="int" />
+					<param name="format" comment="Requested format" fulltype="java.lang.String" type="String" />
+					<param name="bbox" comment="Bounding box" fulltype="java.lang.String" type="String" />
+					<param name="srs" comment="Spatial reference system associated with the bbox." fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="getImage" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="width" fulltype="int" type="int" />
+					<param name="height" fulltype="int" type="int" />
+					<param name="format" fulltype="java.lang.String" type="String" />
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="srs" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="seed" returncomment="Returns a HashMap with status information. Keys include
+  &quot;Total Files&quot;, &quot;Total Processed&quot;, and &quot;Is Complete&quot;." fulltype="mapproxy.core.Status" type="Status">
+				<comment>
+					<description>Used to seed the current layer at a given point</description>
+					<attribute name="@param">
+						<description>bbox Bounding box</description>
+					</attribute>
+					<attribute name="@param">
+						<description>srs Spatial reference system associated with the bbox.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>levels Number of resolution levels</description>
+					</attribute>
+					<attribute name="@return">
+						<description>Returns a HashMap with status information. Keys include
+  &quot;Total Files&quot;, &quot;Total Processed&quot;, and &quot;Is Complete&quot;.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="numThreads" fulltype="int" type="int" />
+					<param name="bbox" comment="Bounding box" fulltype="double[]" type="double" />
+					<param name="srs" comment="Spatial reference system associated with the bbox." fulltype="java.lang.String" type="String" />
+					<param name="levels" comment="Number of resolution levels" fulltype="int" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass abstract="true" superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.Generator" type="Generator">
+		<implements>
+			<interface fulltype="java.lang.Iterable" type="Iterable" />
+		</implements>
+		<comment>
+			<description>An iterator that yields its values one at a time. Subclasses must define a
+ method called {@link #run()} and may call {@link yield(T)} to return values
+ one at a time.
+ &lt;p&gt;
+ The generator ends when it reaches a return statement or the end of the
+ method. On the other hand, an generator may run forever and thus yield an
+ infinite sequence (see Example 1 for an example).
+ &lt;p&gt;
+ Please beware that calling {@link #hasNext()} on the generator (and thus
+ any use in a for-each loop) provokes a lookahead of one value. Therefore
+ you cannot repeatedly yield the same object, but rather, you must clone the
+ value on each yield statement (see Example 3 for an example).
+ &lt;p&gt;
+ &lt;b&gt;Example 1:&lt;/b&gt; Yields an infinite sequence of fibonacci numbers.
+ &lt;pre&gt;Generator&amp;lt;Integer&amp;gt; fibonacci = new Generator&amp;lt;Integer&amp;gt;() {
+    &amp;#64;Override
+    public void run() {
+        int a = 0, b = 1;
+        while (true) {
+            a = b + (b = a);
+            yield(a);
+        }
+    }
+};
+
+for (int x : fibonacci) {
+    if (x &gt; 20000) break;
+    System.out.println(x);
+}&lt;/pre&gt;
+ &lt;p&gt;
+ &lt;b&gt;Example 2:&lt;/b&gt; Yields all characters of the string &quot;Hello, Worlds!&quot;.
+ &lt;pre&gt;Generator&amp;lt;char&amp;gt&gt; hello = new Generator&amp;lt;char&amp;gt;() {
+    &amp;#64;Override
+    public void run() {
+        String str = &quot;Hello, Worlds!&quot;;
+        for (int n = 0; n &lt; str.length; n++) {
+            yield(str.atChar(n));
+        }
+    }
+};
+
+for (char each : hello) {
+    System.out.println(each);
+}&lt;/pre&gt;
+ &lt;p&gt;
+ &lt;b&gt;Example 3:&lt;/b&gt; Yields all perutations of an array.
+ &lt;pre&gt;public static &amp;lt;T&amp;gt; Generator&amp;lt;T[]&amp;gt; permute(final T[] a) {
+    return new Generator&amp;lt;T[]&amp;gt;() {
+        &amp;#64;Override
+        public void run() {
+            permute(a.length - 1);
+        }
+        private void permute(int n) {
+            if (n == 0) yield(a.clone());
+            else for (int k = n; k &gt;= 0; k--) {
+                swap(n,k);
+                permute(n - 1);
+                swap(n,k);
+            }
+        }
+        private void swap(int n, int m) {
+            T temp = a[n];
+            a[n] = a[m];
+            a[m] = temp;
+        }
+    };
+}&lt;/pre&gt;
+
+ &lt;p&gt;&amp;nbsp;
+
+ &lt;b&gt;NB:&lt;/b&gt; this class makes use of Threads, you might want to double-check
+ its source code before using it in a multi-threaded application.</description>
+			<attribute name="@author">
+				<description>Adrian Kuhn &amp;lt;akuhn(at)iam.unibe.ch&amp;gt;</description>
+			</attribute>
+			<attribute name="@see">
+				<description>http://smallwiki.unibe.ch/adriankuhn/yield4java/</description>
+			</attribute>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="Generator" />
+			<method abstract="true" visibility="public" name="run" fulltype="void" type="void" />
+			<method visibility="public" name="iterator" fulltype="java.util.Iterator" type="Iterator" />
+			<method visibility="protected" name="yield" fulltype="void" type="void">
+				<params>
+					<param name="value" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method synchronized="true" visibility="public" name="done" fulltype="void" type="void" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.Capabilities" type="Capabilities">
+		<comment>
+			<description>Used to construct a capabilities document in various formats including
+   WMS and ArcGIS.
+
+   Note that this class was not part of the original mapproxy baseline.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="Capabilities">
+				<comment>
+					<description>Creates a new instance of Capabilities.</description>
+				</comment>
+				<params>
+					<param name="service" fulltype="mapproxy.core.Service" type="Service" />
+				</params>
+			</constructor>
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns a capabilities document in the requested format (e.g. WMS,
+  ArcGIS, etc.)</description>
+				</comment>
+				<params>
+					<param name="format" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns an OGC WMS Capabilities Document. Use the other toString()
+  method to get a capabilities document in other formats.</description>
+				</comment>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.BBox" type="BBox">
+		<comment>
+			<description>Used to represent a bounding box used in map requests.
+   Note that this class was not part of the original mapproxy baseline.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="BBox">
+				<comment>
+					<description>Creates a new instance of BBOX.</description>
+				</comment>
+				<params>
+					<param name="minX" fulltype="double" type="double" />
+					<param name="minY" fulltype="double" type="double" />
+					<param name="maxX" fulltype="double" type="double" />
+					<param name="maxY" fulltype="double" type="double" />
+					<param name="srs" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="BBox">
+				<params>
+					<param name="minX" fulltype="double" type="double" />
+					<param name="minY" fulltype="double" type="double" />
+					<param name="maxX" fulltype="double" type="double" />
+					<param name="maxY" fulltype="double" type="double" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="BBox">
+				<comment>
+					<description>&quot;bbox&quot; as a tuple (minx, miny, maxx, maxy).</description>
+				</comment>
+				<params>
+					<param name="bbox" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<method visibility="public" name="getMinX" fulltype="double" type="double" />
+			<method visibility="public" name="getMinY" fulltype="double" type="double" />
+			<method visibility="public" name="getMaxX" fulltype="double" type="double" />
+			<method visibility="public" name="getMaxY" fulltype="double" type="double" />
+			<method visibility="public" name="getSRS" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns a comma delimited representation of the BBOX.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="toArray" fulltype="double[]" type="double" />
+		</methods>
+	</jelclass>
+	<jelclass abstract="true" visibility="public" package="mapproxy.core.cache" interface="true" fulltype="mapproxy.core.cache._TileCreator" type="_TileCreator">
+		<comment>
+			<description>Base class for the creation of new tiles.
+   Subclasses can implement different strategies how multiple tiles should
+   be created (e.g. threaded).</description>
+		</comment>
+		<methods>
+			<method visibility="public" name="create_tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<comment>
+					<description>Create the given tiles (`_Tile.source` will be set). Returns a list with
+   all created tiles.
+ 
+   Note: The returned list may contain more tiles than requested. This
+   allows the `TileSource` to create multiple tiles in one pass.</description>
+				</comment>
+				<params>
+					<param name="tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+					<param name="tile_collection" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache._Tile" type="_Tile">
+		<comment>
+			<description>Internal data object for all tiles. Stores the tile-&quot;coord&quot; and the tile
+   data.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="coord" fulltype="int[]" type="int" />
+			<field visibility="public" name="source" fulltype="javaxt.io.Image" type="javaxt.io.Image" />
+			<field visibility="public" name="stored" fulltype="boolean" type="boolean" />
+			<field visibility="public" name="location" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="size" fulltype="java.lang.Long" type="Long" />
+			<field visibility="public" name="timestamp" fulltype="java.lang.Long" type="Long" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="_Tile">
+				<comment>
+					<attribute name="@param">
+						<description>source the data of this tile (type ImageSource)</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="coord" fulltype="int[]" type="int" />
+					<param name="source" comment="the data of this tile (type ImageSource)" fulltype="javaxt.io.Image" type="javaxt.io.Image" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="_Tile">
+				<params>
+					<param name="x" fulltype="int" type="int" />
+					<param name="y" fulltype="int" type="int" />
+					<param name="z" fulltype="int" type="int" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="_Tile">
+				<params>
+					<param name="coord" fulltype="int[]" type="int" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="_Tile">
+				<params>
+					<param name="coord" fulltype="mapproxy.core.grid.TileCoordinate" type="TileCoordinate" />
+				</params>
+			</constructor>
+			<method visibility="public" name="is_missing" fulltype="boolean" type="boolean">
+				<comment>
+					<description>Returns ``True`` when the tile has no ``data``, except when the ``coord``
+        is ``None``. It doesn&apos;t check if the tile exists.
+
+        &gt;&gt;&gt; _Tile((1, 2, 3)).is_missing()
+        True
+        &gt;&gt;&gt; _Tile((1, 2, 3), &apos;./tmp/foo&apos;).is_missing()
+        False
+        &gt;&gt;&gt; _Tile(None).is_missing()
+        False</description>
+				</comment>
+			</method>
+			<method visibility="public" name="equals" fulltype="boolean" type="boolean">
+				<comment>
+					<description>&lt;pre&gt;
+        &gt;&gt;&gt; _Tile((0, 0, 1)) == _Tile((0, 0, 1))
+        True
+        &gt;&gt;&gt; _Tile((0, 0, 1)) == _Tile((1, 0, 1))
+        False
+        &gt;&gt;&gt; _Tile((0, 0, 1)) == None
+        False
+   &lt;/pre&gt;</description>
+				</comment>
+				<params>
+					<param name="other" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="notEquals" fulltype="boolean" type="boolean">
+				<comment>
+					<description>&gt;&gt;&gt; _Tile((0, 0, 1)) != _Tile((0, 0, 1))
+        False
+        &gt;&gt;&gt; _Tile((0, 0, 1)) != _Tile((1, 0, 1))
+        True
+        &gt;&gt;&gt; _Tile((0, 0, 1)) != None
+        True</description>
+				</comment>
+				<params>
+					<param name="other" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="hashCode" fulltype="int" type="int" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache._ThreadedTileCreator" type="_ThreadedTileCreator">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="_ThreadedTileCreator">
+				<comment>
+					<description>Creates a new instance of _ThreadedTileCreator.</description>
+				</comment>
+			</constructor>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache._SequentialTileCreator" type="_SequentialTileCreator">
+		<implements>
+			<interface fulltype="mapproxy.core.cache._TileCreator" type="_TileCreator" />
+		</implements>
+		<comment>
+			<description>This `_TileCreator` creates one requested tile after the other.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="tile_source" fulltype="mapproxy.core.cache.TileSource" type="TileSource" />
+			<field visibility="public" name="cache" fulltype="mapproxy.core.cache.CacheManager" type="CacheManager" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="_SequentialTileCreator">
+				<comment>
+					<description>Creates a new instance of _SequentialTileCreator.</description>
+				</comment>
+				<params>
+					<param name="tile_source" fulltype="mapproxy.core.cache.TileSource" type="TileSource" />
+					<param name="cache" fulltype="mapproxy.core.cache.CacheManager" type="CacheManager" />
+				</params>
+			</constructor>
+			<method visibility="public" name="create_tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<params>
+					<param name="tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+					<param name="tile_collection" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass abstract="true" superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache.TileSource" type="TileSource">
+		<comment>
+			<description>Base class for tile sources.
+   A TileSource knows how to get the `_Tile.source` for a given tile.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="lock_dir" fulltype="java.lang.String" type="String" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="TileSource" />
+			<method visibility="public" name="init" fulltype="void" type="void">
+				<comment>
+					<description>Creates a new instance of TileSource.</description>
+					<attribute name="@param">
+						<description>lock_dir &quot;Lock&quot; Directory specified in defaults.py</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="lock_dir" comment="&quot;Lock&quot; Directory specified in defaults.py" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="id" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns a unique but constant id of this TileSource used for locking.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="tile_lock" fulltype="mapproxy.core.utils.FileLock" type="FileLock">
+				<comment>
+					<description>Returns a lock object for the given tile.</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="lock_filename" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="create_tile" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<comment>
+					<description>Create the given tile and set the `_Tile.source`. It doesn&apos;t store the
+   data on disk (or else where), this is up to the cache manager.
+
+   Note: This method may return multiple tiles, if it is more effective for the
+               ``TileSource`` to create multiple tiles in one pass.
+        :rtype: list of ``Tiles``</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+					<param name="tile_map" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache.TileFilter" type="TileFilter">
+		<comment>
+			<description>Tile filters can manipulate tiles before they are written to the cache.
+
+    A TileFilter needs a ``create_filter`` method that takes ``layer_conf`` and a
+    ``priority`` attribute.
+
+    The priority controls in wich order the filters are applied. A higher value
+    means that the filter is applied first.
+
+    The ``create_filter`` method should return the filter function or ``None`` if
+    the filter does not apply to the layer.
+    Each filter should use some layer variable(s) to configure if the filter should
+    apply to a specific layer. The ``create_filter`` should check for this
+    variable(s) in the given ``layer_conf``.
+
+    The filter function gets a `mapproxy.core.cache._Tile` and must return the
+    same (modified) tile.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileFilter">
+				<comment>
+					<description>Creates a new instance of TileFilter.</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</constructor>
+		</methods>
+	</jelclass>
+	<jelclass superclass="ArrayList" visibility="public" package="mapproxy.core.cache" serializable="true" superclassfulltype="java.util.ArrayList" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileCollection">
+				<comment>
+					<description>Creates a new instance of TileCollection.</description>
+				</comment>
+				<params>
+					<param name="tile_coords" fulltype="mapproxy.core.Generator" type="Generator" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="TileCollection" />
+			<method visibility="public" name="get" fulltype="mapproxy.core.cache._Tile" type="_Tile">
+				<params>
+					<param name="tile_coord" fulltype="int[]" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache.FileCache" type="FileCache">
+		<comment>
+			<description>This class is responsible to store and load the actual tile data.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="cache_dir" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="file_ext" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="pre_store_filter" fulltype="mapproxy.core.cache.TileFilter[]" type="TileFilter" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="FileCache">
+				<comment>
+					<description>Creates a new instance of FileCache.</description>
+					<attribute name="@param">
+						<description>cache_dir the path where the tile will be stored</description>
+					</attribute>
+					<attribute name="@param">
+						<description>file_ext the file extension that will be appended to each tile
+  (e.g. &apos;png&apos;)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>pre_store_filter a list with filter. each filter will be called
+   with a tile before it will be stored to disc. the filter should return
+   this or a new tile object.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="cache_dir" comment="the path where the tile will be stored" fulltype="java.lang.String" type="String" />
+					<param name="file_ext" comment="the file extension that will be appended to each tile
+  (e.g. &apos;png&apos;)" fulltype="java.lang.String" type="String" />
+					<param name="pre_store_filter" comment="a list with filter. each filter will be called
+   with a tile before it will be stored to disc. the filter should return
+   this or a new tile object." fulltype="mapproxy.core.cache.TileFilter[]" type="TileFilter" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="FileCache">
+				<params>
+					<param name="cache_dir" fulltype="java.lang.String" type="String" />
+					<param name="file_ext" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<method visibility="public" name="level_location" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Return the path where all tiles for `level` will be stored.
+    &lt;pre&gt;
+        &gt;&gt;&gt; c = FileCache(cache_dir=&apos;/tmp/cache/&apos;, file_ext=&apos;png&apos;)
+        &gt;&gt;&gt; c.level_location(2)
+        &apos;/tmp/cache/02&apos;
+    &lt;/pre&gt;</description>
+				</comment>
+				<params>
+					<param name="level" fulltype="double" type="double" />
+				</params>
+			</method>
+			<method visibility="public" name="tile_location" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Return the location of the `tile`. Caches the result as ``location``
+   property of the `tile`.</description>
+					<attribute name="@param">
+						<description>tile: the tile object</description>
+					</attribute>
+					<attribute name="@param">
+						<description>create_dir: if True, create all necessary directories</description>
+					</attribute>
+					<attribute name="@return:">
+						<description>the full filename of the tile
+    &lt;pre&gt;
+        &gt;&gt;&gt; c = FileCache(cache_dir=&apos;/tmp/cache/&apos;, file_ext=&apos;png&apos;)
+        &gt;&gt;&gt; c.tile_location(_Tile((3, 4, 2))).replace(&apos;\\\\&apos;, &apos;/&apos;)
+        &apos;/tmp/cache/02/000/000/003/000/000/004.png&apos;
+    &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+					<param name="create_dir" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="timestamp_created" fulltype="java.lang.Long" type="Long">
+				<comment>
+					<description>Return the timestamp of the last modification of the tile.</description>
+					<attribute name="@param">
+						<description>tile</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile" comment="" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="_update_tile_metadata" fulltype="mapproxy.core.cache._Tile" type="_Tile">
+				<comment>
+					<description>Used to update tile metadata. Needed to add return statement for java.</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="is_cached" fulltype="boolean" type="boolean">
+				<comment>
+					<description>Returns true if the tile data is present.</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="load" returncomment="_Tile (vs boolean) because I can&apos;t update the input tile AND 
+   return a boolean. Treat null returns as false, non-null as true." fulltype="mapproxy.core.cache._Tile" type="_Tile">
+				<comment>
+					<description>Fills the `_Tile.source` of the `tile` if it is cached.
+   If it is not cached or if the ``.coord`` is ``None``, nothing happens.</description>
+					<attribute name="@return">
+						<description>_Tile (vs boolean) because I can&apos;t update the input tile AND 
+   return a boolean. Treat null returns as false, non-null as true.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+					<param name="with_metadata" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="store" fulltype="mapproxy.core.cache._Tile" type="_Tile">
+				<comment>
+					<description>Add the given `tile` to the file cache. Stores the `_Tile.source` to
+   `FileCache.tile_location`.  All ``pre_store_filter`` will be called with
+   the tile, before it will be stored.</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="round" fulltype="double" type="double">
+				<params>
+					<param name="value" fulltype="double" type="double" />
+					<param name="decimalPlace" fulltype="int" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache.CacheManager" type="CacheManager">
+		<comment>
+			<description>Manages tile cache and tile creation.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="cache" fulltype="mapproxy.core.cache.FileCache" type="FileCache" />
+			<field visibility="public" name="tile_source" fulltype="mapproxy.core.cache.TileSource" type="TileSource" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="CacheManager">
+				<comment>
+					<description>Creates a new instance of CacheManager.</description>
+				</comment>
+				<params>
+					<param name="cache" fulltype="mapproxy.core.cache.FileCache" type="FileCache" />
+					<param name="tile_source" fulltype="mapproxy.core.cache.TileSource" type="TileSource" />
+				</params>
+			</constructor>
+			<method visibility="public" name="is_cached" fulltype="boolean" type="boolean">
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="expire_timestamp" fulltype="java.lang.Long" type="Long">
+				<comment>
+					<description>Return the timestamp until which a tile should be accepted as up-to-date,
+   or ``None`` if the tiles should not expire.
+
+        :note: Returns ``None`` by default. Overwrite/change method to enable
+            expiration.</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="load_tile_coords" returncomment="list with `ImageSource` for all tiles (None for out of bounds tiles)" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<comment>
+					<description>Load all given tiles from cache. If they are not present, load them.</description>
+					<attribute name="@param">
+						<description>tile_coords list with tile coordinates (None for out of bounds tiles)</description>
+					</attribute>
+					<attribute name="@return">
+						<description>list with `ImageSource` for all tiles (None for out of bounds tiles)</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile_coords" comment="list with tile coordinates (None for out of bounds tiles)" fulltype="mapproxy.core.Generator" type="Generator" />
+					<param name="with_metadata" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="load_tile_coords" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<comment>
+					<description>Overloaded member used by Cache.tile();</description>
+				</comment>
+				<params>
+					<param name="tile_coord" fulltype="int[]" type="int" />
+					<param name="with_metadata" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="_load_cached_tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<comment>
+					<description>Set the `_Tile.source` for all cached tiles.</description>
+				</comment>
+				<params>
+					<param name="tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+					<param name="with_metadata" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="store_tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<comment>
+					<description>Store the given tiles in the underlying cache.</description>
+				</comment>
+				<params>
+					<param name="tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.cache" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.cache.Cache" type="Cache">
+		<comment>
+			<description>Easy access to images from cached tiles.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="cache_mgr" fulltype="mapproxy.core.cache.CacheManager" type="CacheManager" />
+			<field visibility="public" name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+			<field visibility="public" name="transparent" fulltype="boolean" type="boolean" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="Cache">
+				<comment>
+					<description>Creates a new instance of Cache.</description>
+					<attribute name="@param">
+						<description>cache_mgr the cache manager</description>
+					</attribute>
+					<attribute name="@param">
+						<description>grid the grid of the tile cache</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="cache_mgr" comment="the cache manager" fulltype="mapproxy.core.cache.CacheManager" type="CacheManager" />
+					<param name="grid" comment="the grid of the tile cache" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="transparent" fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="Cache">
+				<params>
+					<param name="cache_mgr" fulltype="mapproxy.core.cache.CacheManager" type="CacheManager" />
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+				</params>
+			</constructor>
+			<method visibility="public" name="tile" returncomment="loaded tile or ``None``" fulltype="mapproxy.core.cache._Tile" type="_Tile">
+				<comment>
+					<description>Return a single tile.</description>
+					<attribute name="@return">
+						<description>loaded tile or ``None``</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile_coord" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="_tiles" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<params>
+					<param name="tile_coords" fulltype="mapproxy.core.Generator" type="Generator" />
+				</params>
+			</method>
+			<method visibility="public" name="image" returncomment="`ImageSource`" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Return an image with the given bbox and size. The result will be
+   cropped/transformed if needed.</description>
+					<attribute name="@param">
+						<description>req_bbox the requested bbox</description>
+					</attribute>
+					<attribute name="@param">
+						<description>req_srs the srs of the req_bbox</description>
+					</attribute>
+					<attribute name="@param">
+						<description>out_size the output size</description>
+					</attribute>
+					<attribute name="@return">
+						<description>`ImageSource`</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="req_bbox" comment="the requested bbox" fulltype="double[]" type="double" />
+					<param name="req_srs" comment="the srs of the req_bbox" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="out_size" comment="the output size" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="create_dir" fulltype="void" type="void">
+				<params>
+					<param name="file_name" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Grid" visibility="public" package="mapproxy.core.grid" superclassfulltype="mapproxy.core.grid.Grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid">
+		<comment>
+			<description>This class represents a regular tile grid. The first level (0) contains a
+   single tile, the origin is bottom-left.
+  &lt;pre&gt;
+    &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+    &gt;&gt;&gt; [round(x, 2) for x in grid.bbox]
+    [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+  &lt;/pre&gt;</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="tile_size" fulltype="int[]" type="int" />
+			<field visibility="public" name="levels" fulltype="int" type="int" />
+			<field visibility="public" name="res_type" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="grid_sizes" fulltype="java.util.List" type="List" />
+			<field static="true" visibility="public" name="RES_TYPE_SQRT2" fulltype="java.lang.String" type="String" />
+			<field static="true" visibility="public" name="RES_TYPE_GLOBAL" fulltype="java.lang.String" type="String" />
+			<field static="true" visibility="public" name="RES_TYPE_CUSTOM" fulltype="java.lang.String" type="String" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="TileGrid">
+				<comment>
+					<description>Creates a new instance of TileGrid.</description>
+					<attribute name="@param">
+						<description>res_type the type of the multi-resolution pyramid. res_type:
+    &quot;RES_TYPE_CUSTOM&quot;, &quot;RES_TYPE_GLOBAL&quot;, &quot;RES_TYPE_SQRT2&quot;</description>
+					</attribute>
+					<attribute name="@param">
+						<description>levels the number of levels</description>
+					</attribute>
+					<attribute name="@param">
+						<description>tile_size the size of each tile in pixel [int(with), int(height)]</description>
+					</attribute>
+					<attribute name="@param">
+						<description>bbox the bbox of the grid, tiles may overlap this bbox</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="epsg" fulltype="int" type="int" />
+					<param name="bbox" comment="the bbox of the grid, tiles may overlap this bbox" fulltype="double[]" type="double" />
+					<param name="tile_size" comment="the size of each tile in pixel [int(with), int(height)]" fulltype="int[]" type="int" />
+					<param name="res" fulltype="java.lang.String" type="String" />
+					<param name="is_geodetic" fulltype="boolean" type="boolean" />
+					<param name="levels" comment="the number of levels" fulltype="java.lang.Integer" type="Integer" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="TileGrid">
+				<params>
+					<param name="epsg" fulltype="int" type="int" />
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="tile_size" fulltype="int[]" type="int" />
+					<param name="res" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="TileGrid">
+				<params>
+					<param name="epsg" fulltype="int" type="int" />
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="tile_size" fulltype="int[]" type="int" />
+					<param name="res" fulltype="java.lang.String" type="String" />
+					<param name="is_geodetic" fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="TileGrid">
+				<params>
+					<param name="epsg" fulltype="int" type="int" />
+					<param name="tile_size" fulltype="int[]" type="int" />
+				</params>
+			</constructor>
+			<method visibility="public" name="resolution" fulltype="double" type="double">
+				<comment>
+					<description>Returns the resolution of the `level` in units/pixel.</description>
+					<attribute name="@param">
+						<description>level the zoom level index (zero is top)
+
+    &lt;pre&gt;
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.resolution(0)
+        156543.03392804097
+        &gt;&gt;&gt; grid.resolution(1)
+        78271.516964020484
+        &gt;&gt;&gt; grid.resolution(4)
+        9783.9396205025605
+    &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="level" comment="the zoom level index (zero is top)
+
+    &lt;pre&gt;
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.resolution(0)
+        156543.03392804097
+        &gt;&gt;&gt; grid.resolution(1)
+        78271.516964020484
+        &gt;&gt;&gt; grid.resolution(4)
+        9783.9396205025605
+    &lt;/pre&gt;" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="closest_level" returncomment="the level with the requested or higher resolution
+   &lt;pre&gt;
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.stretch_factor = 1.1
+        &gt;&gt;&gt; l1_res = grid.resolution(1)
+        &gt;&gt;&gt; [grid.closest_level(x) for x in (320000.0, 160000.0, l1_res+50, l1_res, \
+                                             l1_res-50, l1_res*0.91, l1_res*0.89, 8000.0)]
+        [0, 0, 1, 1, 1, 1, 2, 5]
+   &lt;/pre&gt;" fulltype="int" type="int">
+				<comment>
+					<description>Returns the level index that offers the required resolution.</description>
+					<attribute name="@param">
+						<description>res the required resolution</description>
+					</attribute>
+					<attribute name="@return">
+						<description>the level with the requested or higher resolution
+   &lt;pre&gt;
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.stretch_factor = 1.1
+        &gt;&gt;&gt; l1_res = grid.resolution(1)
+        &gt;&gt;&gt; [grid.closest_level(x) for x in (320000.0, 160000.0, l1_res+50, l1_res, \
+                                             l1_res-50, l1_res*0.91, l1_res*0.89, 8000.0)]
+        [0, 0, 1, 1, 1, 1, 2, 5]
+   &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="res" comment="the required resolution" fulltype="double" type="double" />
+				</params>
+			</method>
+			<method visibility="public" name="tile" fulltype="int[]" type="int">
+				<comment>
+					<description>Returns the tile id for the given point.
+
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.tile(1000, 1000, 0)
+        (0, 0, 0)
+        &gt;&gt;&gt; grid.tile(1000, 1000, 1)
+        (1, 1, 1)
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913, tile_size=(512, 512))
+        &gt;&gt;&gt; grid.tile(1000, 1000, 2)
+        (2, 2, 2)</description>
+				</comment>
+				<params>
+					<param name="x" fulltype="double" type="double" />
+					<param name="y" fulltype="double" type="double" />
+					<param name="level" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="flip_tile_coord" fulltype="int[]" type="int">
+				<comment>
+					<description>Flip the tile coord on the y-axis. (Switch between bottom-left and top-
+  left origin.)
+
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.flip_tile_coord((0, 1, 1))
+        (0, 0, 1)
+        &gt;&gt;&gt; grid.flip_tile_coord((1, 3, 2))
+        (1, 0, 2)</description>
+				</comment>
+				<params>
+					<param name="coord" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="get_affected_tiles" returncomment="An array containing the bbox, the size, and a list with tile
+  coordinates, sorted row-wise. rtype: ``bbox, (xs, yz), [(x, y, z), ...]``
+   &lt;pre&gt;
+        &gt;&gt;&gt; grid = TileGrid()
+        &gt;&gt;&gt; bbox = (-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+        &gt;&gt;&gt; tile_size = (256, 256)
+        &gt;&gt;&gt; grid.get_affected_tiles(bbox, tile_size)
+        ... #doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+        ((-20037508.342789244, -20037508.342789244,\
+          20037508.342789244, 20037508.342789244), (1, 1),\
+          &lt;generator object at ...&gt;)
+   &lt;/pre&gt;" fulltype="java.lang.Object[]" type="Object">
+				<comment>
+					<description>Get a list with all affected tiles for a bbox and output size.</description>
+					<attribute name="@return">
+						<description>An array containing the bbox, the size, and a list with tile
+  coordinates, sorted row-wise. rtype: ``bbox, (xs, yz), [(x, y, z), ...]``
+   &lt;pre&gt;
+        &gt;&gt;&gt; grid = TileGrid()
+        &gt;&gt;&gt; bbox = (-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+        &gt;&gt;&gt; tile_size = (256, 256)
+        &gt;&gt;&gt; grid.get_affected_tiles(bbox, tile_size)
+        ... #doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+        ((-20037508.342789244, -20037508.342789244,\
+          20037508.342789244, 20037508.342789244), (1, 1),\
+          &lt;generator object at ...&gt;)
+   &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="size" fulltype="int[]" type="int" />
+					<param name="req_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="inverse" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="_get_bbox" returncomment="Returns the bbox of all tiles" fulltype="double[]" type="double">
+				<comment>
+					<description>Returns the bbox of multiple tiles. The tiles should be ordered row-wise,
+  bottom-up.</description>
+					<attribute name="@param">
+						<description>tiles ordered list of tiles</description>
+					</attribute>
+					<attribute name="@return">
+						<description>Returns the bbox of all tiles</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tiles" comment="ordered list of tiles" fulltype="java.util.List" type="List" />
+				</params>
+			</method>
+			<method visibility="public" name="tile_bbox" fulltype="double[]" type="double">
+				<comment>
+					<description>Returns the bbox of the given tile.
+
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; [round(x, 2) for x in grid.tile_bbox((0, 0, 0))]
+        [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+        &gt;&gt;&gt; [round(x, 2) for x in grid.tile_bbox((1, 1, 1))]
+        [0.0, 0.0, 20037508.34, 20037508.34]</description>
+				</comment>
+				<params>
+					<param name="x" fulltype="int" type="int" />
+					<param name="y" fulltype="int" type="int" />
+					<param name="z" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="limit_tile" returncomment="the &quot;tile_coord&quot; if it is within the &quot;grid&quot;, otherwise null.
+
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.limit_tile((-1, 0, 2)) == None
+        True
+        &gt;&gt;&gt; grid.limit_tile((1, 2, 1)) == None
+        True
+        &gt;&gt;&gt; grid.limit_tile((1, 2, 2))
+        (1, 2, 2)" fulltype="int[]" type="int">
+				<comment>
+					<description>Check if the &quot;tile_coord&quot; is in the grid.</description>
+					<attribute name="@return">
+						<description>the &quot;tile_coord&quot; if it is within the &quot;grid&quot;, otherwise null.
+
+        &gt;&gt;&gt; grid = TileGrid(epsg=900913)
+        &gt;&gt;&gt; grid.limit_tile((-1, 0, 2)) == None
+        True
+        &gt;&gt;&gt; grid.limit_tile((1, 2, 1)) == None
+        True
+        &gt;&gt;&gt; grid.limit_tile((1, 2, 2))
+        (1, 2, 2)</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile_coord" fulltype="int[]" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.grid" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.grid.TileCoordinate" type="TileCoordinate">
+		<comment>
+			<description>Contains the ``tile_coord`` and the upper-left
+   pixel coordinate of the tile in a meta tile image.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="tile_coord" fulltype="int[]" type="int" />
+			<field visibility="public" name="crop_coord" fulltype="int[]" type="int" />
+		</fields>
+		<methods>
+			<constructor visibility="protected" name="TileCoordinate">
+				<comment>
+					<description>Creates a new instance of MetaTile.</description>
+				</comment>
+				<params>
+					<param name="tile_coord" fulltype="int[]" type="int" />
+					<param name="ul_pixel_coord" fulltype="int[]" type="int" />
+				</params>
+			</constructor>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Grid" visibility="public" package="mapproxy.core.grid" superclassfulltype="mapproxy.core.grid.Grid" fulltype="mapproxy.core.grid.MetaGrid" type="MetaGrid">
+		<comment>
+			<description>This class contains methods to calculate bbox, etc. of metatiles.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="MetaGrid">
+				<comment>
+					<description>Creates a new instance of MetaGrid.</description>
+					<attribute name="@param">
+						<description>grid the grid to use for the metatiles</description>
+					</attribute>
+					<attribute name="@param">
+						<description>meta_size the number of tiles a metatile consist (x_size, y_size)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>meta_buffer the buffer size in pixel that is added to each metatile.
+    the number is added to all four borders.
+    this buffer may improve the handling of lables overlapping (meta)tile borders.
+ :type meta_buffer: pixel</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="grid" comment="the grid to use for the metatiles" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="meta_size" comment="the number of tiles a metatile consist (x_size, y_size)" fulltype="int[]" type="int" />
+					<param name="meta_buffer" comment="the buffer size in pixel that is added to each metatile.
+    the number is added to all four borders.
+    this buffer may improve the handling of lables overlapping (meta)tile borders.
+ :type meta_buffer: pixel" fulltype="int" type="int" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="MetaGrid">
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="meta_size" fulltype="int[]" type="int" />
+				</params>
+			</constructor>
+			<method visibility="public" name="meta_bbox" fulltype="double[]" type="double">
+				<comment>
+					<description>Returns the bbox of the metatile that contains `tile_coord`.
+    &lt;pre&gt;
+        &gt;&gt;&gt; mgrid = MetaGrid(grid=TileGrid(), meta_size=(2, 2))
+        &gt;&gt;&gt; [round(x, 2) for x in mgrid.meta_bbox((0, 0, 2))]
+        [-20037508.34, -20037508.34, 0.0, 0.0]
+        &gt;&gt;&gt; mgrid = MetaGrid(grid=TileGrid(), meta_size=(2, 2))
+        &gt;&gt;&gt; [round(x, 2) for x in mgrid.meta_bbox((0, 0, 0))]
+        [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    &lt;/pre&gt;</description>
+					<attribute name="@param">
+						<description>tile_coord ``(x, y, z)``</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile_coord" comment="``(x, y, z)``" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="tiles" fulltype="mapproxy.core.Generator" type="Generator">
+				<comment>
+					<description>Returns all tiles that belong to the same metatile as `tile_coord`. 
+   The result contains for each tile the ``tile_coord`` and the upper-left
+   pixel coordinate of the tile in the meta tile image.
+    &lt;pre&gt;
+        &gt;&gt;&gt; mgrid = MetaGrid(grid=TileGrid(), meta_size=(2, 2))
+        &gt;&gt;&gt; tiles = list(mgrid.tiles((0, 1, 1)))
+        &gt;&gt;&gt; tiles[0], tiles[-1]
+        (((0, 1, 1), (0, 0)), ((1, 0, 1), (256, 256)))
+        &gt;&gt;&gt; list(mgrid.tiles((0, 0, 0)))
+        [((0, 0, 0), (0, 0))]
+    &lt;/pre&gt;</description>
+				</comment>
+				<params>
+					<param name="tile_coord" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="tile_size" fulltype="int[]" type="int">
+				<comment>
+					<description>Returns the size of a metatile (includes ``meta_buffer`` if present).
+   &lt;pre&gt;
+      &gt;&gt;&gt; mgrid = MetaGrid(grid=TileGrid(), meta_size=(2, 2), meta_buffer=10)
+      &gt;&gt;&gt; mgrid.tile_size(2)
+      (532, 532)
+      &gt;&gt;&gt; mgrid.tile_size(0)
+      (256, 256)
+   &lt;/pre&gt;</description>
+					<attribute name="@param">
+						<description>level the zoom level</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="level" comment="the zoom level" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="meta_size" fulltype="int[]" type="int">
+				<params>
+					<param name="level" fulltype="int" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass abstract="true" superclass="Object" visibility="public" package="mapproxy.core.grid" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.grid.Grid" type="Grid">
+		<comment>
+			<description>(Meta-)Tile grids (data and calculations).</description>
+		</comment>
+		<fields>
+			<field static="true" visibility="public" name="geodetic_epsg_codes" fulltype="java.util.List" type="List" />
+			<field visibility="public" name="bbox" fulltype="double[]" type="double" />
+			<field visibility="public" name="srs" fulltype="mapproxy.core.SRS" type="SRS" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="Grid" />
+			<method visibility="public" name="get_resolution" fulltype="double" type="double">
+				<comment>
+					<description>Calculate the highest resolution needed to draw the bbox into an image
+   with given size.
+   &lt;pre&gt;
+    &gt;&gt;&gt; get_resolution((-180,-90,180,90), (256, 256))
+    0.703125
+   &lt;/pre&gt;</description>
+					<attribute name="@returns">
+						<description>the resolution (float)</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="bbox" fulltype="double[]" type="double" />
+					<param name="size" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="tile_grid_for_epsg" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid">
+				<comment>
+					<description>Create a tile grid that matches the given epsg code:</description>
+					<attribute name="@param">
+						<description>epsg the epsg code (e.g. &apos;EPSG:0000&apos;, &apos;0000&apos; or 0000)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>bbox the bbox of the grid</description>
+					</attribute>
+					<attribute name="@param">
+						<description>tile_size the size of each tile //tile_size=(256, 256)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>res a list with all resolutions</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="epsg" comment="the epsg code (e.g. &apos;EPSG:0000&apos;, &apos;0000&apos; or 0000)" fulltype="int" type="int" />
+					<param name="bbox" comment="the bbox of the grid" fulltype="double[]" type="double" />
+					<param name="tile_size" comment="the size of each tile //tile_size=(256, 256)" fulltype="int[]" type="int" />
+					<param name="res" comment="a list with all resolutions" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="_create_tile_list" fulltype="mapproxy.core.Generator" type="Generator">
+				<comment>
+					<description>Returns an iterator tile_coords for the given tile ranges (`xs` and `ys`).
+  If the one tile_coord is negative or out of the `grid_size` bound,
+  the coord is None.</description>
+				</comment>
+				<params>
+					<param name="xs" fulltype="int[]" type="int" />
+					<param name="ys" fulltype="int[]" type="int" />
+					<param name="level" fulltype="int" type="int" />
+					<param name="grid_size" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="pyramid_res_level" fulltype="double[]" type="double">
+				<comment>
+					<description>Return resolutions of an image pyramid.</description>
+					<attribute name="@param">
+						<description>initial_res the resolution of the top level (0)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>factor the factor between each level, for tms access 2</description>
+					</attribute>
+					<attribute name="@param">
+						<description>levels number of resolutions to generate
+    &lt;pre&gt;
+    &gt;&gt;&gt; pyramid_res_level(10000, levels=5)
+    [10000.0, 5000.0, 2500.0, 1250.0, 625.0]
+    &gt;&gt;&gt; pyramid_res_level(10000, factor=1/0.75, levels=5)
+    [10000.0, 7500.0, 5625.0, 4218.7500000000009, 3164.0625000000005]
+    &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="initial_res" comment="the resolution of the top level (0)" fulltype="double" type="double" />
+					<param name="factor" comment="the factor between each level, for tms access 2" fulltype="java.lang.Double" type="Double" />
+					<param name="levels" comment="number of resolutions to generate
+    &lt;pre&gt;
+    &gt;&gt;&gt; pyramid_res_level(10000, levels=5)
+    [10000.0, 5000.0, 2500.0, 1250.0, 625.0]
+    &gt;&gt;&gt; pyramid_res_level(10000, factor=1/0.75, levels=5)
+    [10000.0, 7500.0, 5625.0, 4218.7500000000009, 3164.0625000000005]
+    &lt;/pre&gt;" fulltype="java.lang.Integer" type="Integer" />
+				</params>
+			</method>
+			<method visibility="protected" name="is_float" fulltype="boolean" type="boolean">
+				<params>
+					<param name="x" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method static="true" visibility="protected" name="cdbl" fulltype="double" type="double">
+				<comment>
+					<description>Used to convert a string to a double.</description>
+				</comment>
+				<params>
+					<param name="d" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="protected" name="cint" fulltype="int" type="int">
+				<params>
+					<param name="d" fulltype="double" type="double" />
+				</params>
+			</method>
+			<method visibility="protected" name="round" fulltype="double" type="double">
+				<params>
+					<param name="value" fulltype="double" type="double" />
+					<param name="decimalPlace" fulltype="int" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.image" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.image.TileSplitter" type="TileSplitter">
+		<comment>
+			<description>Splits a large image into multiple tiles.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileSplitter">
+				<comment>
+					<description>Creates a new instance of TileSplitter.</description>
+				</comment>
+				<params>
+					<param name="meta_tile" fulltype="javaxt.io.Image" type="javaxt.io.Image" />
+					<param name="format" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<method visibility="public" name="get_tile" returncomment="&apos;ImageSource&apos;" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Return the cropped tile.</description>
+					<attribute name="@param">
+						<description>crop_coord the upper left pixel coord to start</description>
+					</attribute>
+					<attribute name="@param">
+						<description>tile_size width and height of the new tile</description>
+					</attribute>
+					<attribute name="@return">
+						<description>&apos;ImageSource&apos;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="crop_coord" comment="the upper left pixel coord to start" fulltype="int[]" type="int" />
+					<param name="tile_size" comment="width and height of the new tile" fulltype="int[]" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.image" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.image.TileMerger" type="TileMerger">
+		<comment>
+			<description>Merge multiple tiles into one image.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileMerger">
+				<comment>
+					<description>Creates a new instance of TileMerger.</description>
+					<attribute name="@param">
+						<description>tile_grid the grid size: ``(int(x_tiles), int(y_tiles))``</description>
+					</attribute>
+					<attribute name="@param">
+						<description>tile_size the size of each tile</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile_grid" comment="the grid size: ``(int(x_tiles), int(y_tiles))``" fulltype="int[]" type="int" />
+					<param name="tile_size" comment="the size of each tile" fulltype="int[]" type="int" />
+				</params>
+			</constructor>
+			<method visibility="public" name="merge" returncomment="&apos;ImageSource&apos;" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Merge all tiles into one image.</description>
+					<attribute name="@param">
+						<description>ordered_tiles list of tiles, sorted row-wise (top to bottom)</description>
+					</attribute>
+					<attribute name="@return">
+						<description>&apos;ImageSource&apos;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="ordered_tiles" comment="list of tiles, sorted row-wise (top to bottom)" fulltype="javaxt.io.Image[]" type="Image" />
+					<param name="transparent" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.image" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.image.TiledImage" type="TiledImage">
+		<comment>
+			<description>An image built-up from multiple tiles.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TiledImage">
+				<comment>
+					<description>Creates a new instance of TiledImage.</description>
+					<attribute name="@param">
+						<description>tiles all tiles (sorted row-wise, top to bottom)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>tile_grid The tile grid size. Type tile_grid: ``(int(x_tiles), int(y_tiles))``</description>
+					</attribute>
+					<attribute name="@param">
+						<description>tile_size the size of each tile</description>
+					</attribute>
+					<attribute name="@param">
+						<description>src_bbox the bbox of all tiles</description>
+					</attribute>
+					<attribute name="@param">
+						<description>src_srs: the srs of the bbox</description>
+					</attribute>
+					<attribute name="@param">
+						<description>transparent: if the sources are transparent</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tiles" comment="all tiles (sorted row-wise, top to bottom)" fulltype="javaxt.io.Image[]" type="Image" />
+					<param name="tile_grid" comment="The tile grid size. Type tile_grid: ``(int(x_tiles), int(y_tiles))``" fulltype="int[]" type="int" />
+					<param name="tile_size" comment="the size of each tile" fulltype="int[]" type="int" />
+					<param name="src_bbox" comment="the bbox of all tiles" fulltype="double[]" type="double" />
+					<param name="src_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="transparent" fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<method visibility="public" name="image" returncomment="&apos;ImageSource&apos;" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Return the tiles as one merged image.</description>
+					<attribute name="@return">
+						<description>&apos;ImageSource&apos;</description>
+					</attribute>
+				</comment>
+			</method>
+			<method visibility="public" name="transform" returncomment="&apos;ImageSource&apos;" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Return the the tiles as one merged and transformed image.</description>
+					<attribute name="@param">
+						<description>req_bbox the bbox of the output image</description>
+					</attribute>
+					<attribute name="@param">
+						<description>req_srs the srs of the req_bbox</description>
+					</attribute>
+					<attribute name="@param">
+						<description>out_size the size in pixel of the output image</description>
+					</attribute>
+					<attribute name="@return">
+						<description>&apos;ImageSource&apos;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="req_bbox" comment="the bbox of the output image" fulltype="double[]" type="double" />
+					<param name="req_srs" comment="the srs of the req_bbox" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="out_size" comment="the size in pixel of the output image" fulltype="int[]" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.image" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.image.LayerMerger" type="LayerMerger">
+		<comment>
+			<description>Merge multiple layers into one image.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="LayerMerger">
+				<comment>
+					<description>Creates a new instance of LayerMerger.</description>
+				</comment>
+			</constructor>
+			<method visibility="public" name="add" fulltype="void" type="void">
+				<comment>
+					<attribute name="@param">
+						<description>layer A single javaxt.io.Image or a Generator&lt;javaxt.io.Image&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="layer" comment="A single javaxt.io.Image or a Generator&lt;javaxt.io.Image&gt;" fulltype="java.lang.Object" type="Object" />
+				</params>
+			</method>
+			<method visibility="public" name="merge" returncomment="`ImageSource`" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Merge the layers. If the format is not &apos;png&apos; just return the last image.</description>
+					<attribute name="@param">
+						<description>format The image format for the result.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>size The size for the merged output.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>bgcolor &apos;#ffffff&apos;</description>
+					</attribute>
+					<attribute name="@return">
+						<description>`ImageSource`</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="format" comment="The image format for the result." fulltype="java.lang.String" type="String" />
+					<param name="size" comment="The size for the merged output." fulltype="int[]" type="int" />
+					<param name="bgcolor" comment="&apos;#ffffff&apos;" fulltype="java.lang.String" type="String" />
+					<param name="transparent" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="merge" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="format" fulltype="java.lang.String" type="String" />
+					<param name="size" fulltype="int[]" type="int" />
+					<param name="transparent" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.image" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.image.ImageTransformer" type="ImageTransformer">
+		<comment>
+			<description>Transform images between different bbox and spatial reference systems.
+
+   The transformation doesn&apos;t make a real transformation for each pixel,
+   but a mesh transformation (see `PIL Image.transform`_).
+   It will divide the target image into rectangles (a mesh). The
+   source coordinates for each rectangle vertex will be calculated.
+   The quadrilateral will then be transformed with the source coordinates
+   into the destination quad (affine).
+ 
+   This method will perform good transformation results if the number of
+   quads is high enough (even transformations with strong distortions).
+   Tests on images up to 1500x1500 have shown that meshes beyond 8x8
+   will not improve the results.
+
+   _PIL Image.transform:
+   http://www.pythonware.com/library/pil/handbook/image.htm#Image.transform
+ 
+ &lt;pre&gt;
+
+
+                    src quad                   dst quad
+                    .----.   &lt;- coord-           .----.
+                   /    /       transformation   |    |
+                  /    /                         |    |
+                 .----.   img-transformation -&gt;  .----.----
+                           |                     |    |
+            ---------------.
+            large src image                   large dst image
+ &lt;/pre&gt;</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="ImageTransformer">
+				<comment>
+					<description>Creates a new instance of ImageTransformer.</description>
+					<attribute name="@param">
+						<description>src_srs the srs of the source image</description>
+					</attribute>
+					<attribute name="@param">
+						<description>dst_srs the srs of the target image</description>
+					</attribute>
+					<attribute name="@param">
+						<description>resampling the resampling method used for transformation:
+  nearest|bilinear|bicubic</description>
+					</attribute>
+					<attribute name="@param">
+						<description>mesh_div the number of quads in each direction to use for
+  transformation (totals to ``mesh_div**2`` quads)</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="src_srs" comment="the srs of the source image" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="dst_srs" comment="the srs of the target image" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="resampling" comment="the resampling method used for transformation:
+  nearest|bilinear|bicubic" fulltype="java.lang.String" type="String" />
+					<param name="mesh_div" comment="the number of quads in each direction to use for
+  transformation (totals to ``mesh_div**2`` quads)" fulltype="int" type="int" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="ImageTransformer">
+				<params>
+					<param name="src_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+					<param name="dst_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+				</params>
+			</constructor>
+			<method visibility="public" name="transform" returncomment="the transformed image: &apos;ImageSource&apos;" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Transforms the `src_img` between the source and destination SRS of this
+   &quot;ImageTransformer&quot; instance.
+ 
+   When the ``src_srs`` and ``dst_srs`` are equal the image will be cropped
+   and not transformed. If the `src_bbox` and `dst_bbox` are equal,
+   the `src_img` itself will be returned.</description>
+					<attribute name="@param">
+						<description>src_img the source image for the transformation</description>
+					</attribute>
+					<attribute name="@param">
+						<description>src_bbox the bbox of the src_img</description>
+					</attribute>
+					<attribute name="@param">
+						<description>dst_size the size of the result image (in pizel). Example: ``(int(width), int(height))``</description>
+					</attribute>
+					<attribute name="@param">
+						<description>dst_bbox the bbox of the result image</description>
+					</attribute>
+					<attribute name="@return">
+						<description>the transformed image: &apos;ImageSource&apos;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="src_img" comment="the source image for the transformation" fulltype="javaxt.io.Image" type="javaxt.io.Image" />
+					<param name="src_bbox" comment="the bbox of the src_img" fulltype="double[]" type="double" />
+					<param name="dst_size" comment="the size of the result image (in pizel). Example: ``(int(width), int(height))``" fulltype="int[]" type="int" />
+					<param name="dst_bbox" comment="the bbox of the result image" fulltype="double[]" type="double" />
+				</params>
+			</method>
+			<method visibility="public" name="griddify" fulltype="mapproxy.core.Generator" type="Generator">
+				<comment>
+					<description>Divides a box (`quad`) into multiple boxes (``steps x steps``).
+    &lt;pre&gt;
+        &gt;&gt;&gt; list(griddify((0, 0, 500, 500), 2))
+        [(0, 0, 250, 250), (250, 0, 500, 250), (0, 250, 250, 500), (250, 250, 500, 500)]
+    &lt;/pre&gt;</description>
+				</comment>
+				<params>
+					<param name="quad" fulltype="double[]" type="double" />
+					<param name="steps" fulltype="int" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.image" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.image.Image" type="Image">
+		<comment>
+			<description>Image and tile manipulation (transforming, merging, etc).</description>
+		</comment>
+		<methods>
+			<method static="true" visibility="public" name="merge_images" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<comment>
+					<description>Merge multiple images into one.</description>
+					<attribute name="@param">
+						<description>images List of `ImageSource`, bottom image first</description>
+					</attribute>
+					<attribute name="@param">
+						<description>format The format of the output `ImageSource`</description>
+					</attribute>
+					<attribute name="@param">
+						<description>size Size of the merged image. If null the size of the first image
+  is used
+    :rtype: `ImageSource`</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="images" comment="List of `ImageSource`, bottom image first" fulltype="java.util.List" type="List" />
+					<param name="format" comment="The format of the output `ImageSource`" fulltype="java.lang.String" type="String" />
+					<param name="size" comment="Size of the merged image. If null the size of the first image
+  is used
+    :rtype: `ImageSource`" fulltype="int[]" type="int" />
+					<param name="transparent" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="merge_images" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="images" fulltype="java.util.List" type="List" />
+					<param name="transparent" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="NoCaseMultiDict" visibility="public" package="mapproxy.core.layer" superclassfulltype="mapproxy.core.request.NoCaseMultiDict" fulltype="mapproxy.core.layer.LayerMetaData" type="LayerMetaData">
+		<comment>
+			<description>Dict-like object for layer metadata. Allows property-style access.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="LayerMetaData">
+				<comment>
+					<description>Creates a new instance of LayerMetadata.</description>
+				</comment>
+			</constructor>
+		</methods>
+	</jelclass>
+	<jelclass abstract="true" superclass="Object" visibility="public" package="mapproxy.core.layer" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.layer.Layer" type="Layer">
+		<comment>
+			<description>Base class for all renderable layers.</description>
+		</comment>
+		<fields>
+			<field visibility="protected" name="srs" fulltype="mapproxy.core.SRS" type="SRS" />
+			<field visibility="protected" name="bbox" fulltype="double[]" type="double" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="Layer" />
+			<method visibility="public" name="render" returncomment="one or more `ImageSource` with the rendered result.
+  Return type is an `ImageSource` (javaxt.io.Image) or an iterable
+  (Generator&lt;javaxt.io.Image&gt;) with multiple `ImageSource`" fulltype="java.lang.Object" type="Object">
+				<comment>
+					<description>Render the response for the given `request`.</description>
+					<attribute name="@param">
+						<description>request the map request</description>
+					</attribute>
+					<attribute name="@return">
+						<description>one or more `ImageSource` with the rendered result.
+  Return type is an `ImageSource` (javaxt.io.Image) or an iterable
+  (Generator&lt;javaxt.io.Image&gt;) with multiple `ImageSource`</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="request" comment="the map request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="bbox" fulltype="double[]" type="double" />
+			<method visibility="public" name="llbbox" fulltype="double[]" type="double">
+				<comment>
+					<description>The LatLonBoundingBox in EPSG:4326</description>
+				</comment>
+			</method>
+			<method visibility="protected" name="_bbox" fulltype="double[]" type="double" />
+			<method visibility="public" name="srs" fulltype="mapproxy.core.SRS" type="SRS" />
+			<method visibility="protected" name="_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.request" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.request.RequestParams" type="RequestParams">
+		<comment>
+			<description>This class represents key-value request parameters. It allows case-
+   insensitive access to all keys. Multiple values for a single key will be
+   concatenated (eg. to &quot;layers=foo&amp;layers=bar&quot; becomes &quot;layers: foo,bar&quot;).
+   All values can be accessed as a property.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="params" fulltype="mapproxy.core.request.NoCaseMultiDict" type="NoCaseMultiDict" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="RequestParams">
+				<comment>
+					<description>Creates a new instance of RequestParams.</description>
+					<attribute name="@param">
+						<description>param A dict or ``NoCaseMultiDict``.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="param" comment="A dict or ``NoCaseMultiDict``." fulltype="mapproxy.core.request.NoCaseMultiDict" type="NoCaseMultiDict" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="RequestParams" />
+			<method visibility="public" name="get" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="defaultValue" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="set" fulltype="void" type="void">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="value" fulltype="java.lang.String" type="String" />
+					<param name="append" fulltype="boolean" type="boolean" />
+					<param name="unpack" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="set" fulltype="void" type="void">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="value" fulltype="java.lang.String" type="String" />
+					<param name="append" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="set" fulltype="void" type="void">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="value" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="copy" fulltype="mapproxy.core.request.RequestParams" type="RequestParams" />
+			<method visibility="public" name="getKeys" fulltype="java.util.HashSet" type="HashSet" />
+			<method visibility="public" name="contains" fulltype="boolean" type="boolean">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="query_string" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>The map request as a query string (the order is not guaranteed).
+   &lt;pre&gt;
+        &gt;&gt;&gt; RequestParams(dict(foo=&apos;egg&apos;, bar=&apos;ham%eggs&apos;, baz=100)).query_string
+        &apos;baz=100&amp;foo=egg&amp;bar=ham%25eggs&apos;
+   &lt;/pre&gt;</description>
+				</comment>
+			</method>
+			<method visibility="public" name="with_defaults" fulltype="mapproxy.core.request.RequestParams" type="RequestParams">
+				<comment>
+					<description>Return this MapRequest with all values from `defaults` overwritten.</description>
+				</comment>
+				<params>
+					<param name="defaults" fulltype="mapproxy.core.request.RequestParams" type="RequestParams" />
+				</params>
+			</method>
+			<method static="true" visibility="public" name="split_mime_type" returncomment="Array containing mime_class, mime_type, options
+   &lt;pre&gt;
+        &gt;&gt;&gt; split_mime_type(&apos;text/xml; charset=utf-8&apos;)
+        (&apos;text&apos;, &apos;xml&apos;, &apos;charset=utf-8&apos;)
+   &lt;/pre&gt;" fulltype="java.lang.String[]" type="String">
+				<comment>
+					<attribute name="@return">
+						<description>Array containing mime_class, mime_type, options
+   &lt;pre&gt;
+        &gt;&gt;&gt; split_mime_type(&apos;text/xml; charset=utf-8&apos;)
+        (&apos;text&apos;, &apos;xml&apos;, &apos;charset=utf-8&apos;)
+   &lt;/pre&gt;</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="mime_type" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.request" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.request.NoCaseMultiDict" type="NoCaseMultiDict">
+		<comment>
+			<description>This is a dictionary that allows case insensitive access to values.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="NoCaseMultiDict">
+				<comment>
+					<description>Creates a new instance of NoCaseMultiDict.</description>
+				</comment>
+			</constructor>
+			<constructor visibility="public" name="NoCaseMultiDict">
+				<params>
+					<param name="dict" fulltype="mapproxy.core.request.NoCaseMultiDict" type="NoCaseMultiDict" />
+				</params>
+			</constructor>
+			<method visibility="public" name="getKeys" fulltype="java.util.HashSet" type="HashSet">
+				<comment>
+					<description>Used to retrieve a list of keys associated with the params.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="contains" fulltype="boolean" type="boolean">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="set" fulltype="void" type="void">
+				<comment>
+					<description>Set a &quot;value&quot; for the &quot;key&quot;. If &quot;append&quot; is &quot;True&quot; the value will be
+   added to other values for this &quot;key&quot;. If &quot;unpack&quot; is True, &quot;value&quot; will
+   be unpacked and each item will be added.</description>
+				</comment>
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="value" fulltype="java.lang.String" type="String" />
+					<param name="append" fulltype="boolean" type="boolean" />
+					<param name="unpack" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="set" fulltype="void" type="void">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="value" fulltype="java.lang.String" type="String" />
+					<param name="append" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+			<method visibility="public" name="set" fulltype="void" type="void">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="value" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="get" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+					<param name="defaultValue" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="get" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.request" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.request.BaseRequest" type="BaseRequest">
+		<comment>
+			<description>This class represents a request with a URL and key-value parameters.</description>
+		</comment>
+		<fields>
+			<field visibility="protected" name="url" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="params" fulltype="mapproxy.core.request.RequestParams" type="RequestParams" />
+			<field visibility="protected" name="validate" fulltype="boolean" type="boolean" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="BaseRequest">
+				<comment>
+					<description>Creates a new instance of BaseRequest.</description>
+					<attribute name="@param">
+						<description>param A dict, `NoCaseMultiDict` or ``RequestParams``.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>url The service URL for the request.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>validate True if the request should be validated after initialization.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="param" comment="A dict, `NoCaseMultiDict` or ``RequestParams``." fulltype="java.lang.Object" type="Object" />
+					<param name="url" comment="The service URL for the request." fulltype="java.lang.String" type="String" />
+					<param name="validate" comment="True if the request should be validated after initialization." fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<method visibility="public" name="copy" fulltype="mapproxy.core.request.BaseRequest" type="BaseRequest" />
+			<method visibility="public" name="url" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="query_string" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="complete_url" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>The complete MapRequest as URL.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="copy_with_request_params" fulltype="mapproxy.core.request.BaseRequest" type="BaseRequest">
+				<comment>
+					<description>Return a copy of this request and overwrite all param values from `req`.
+      Use this method for templates
+        (``req_template.copy_with_request_params(actual_values)``).</description>
+				</comment>
+				<params>
+					<param name="req" fulltype="mapproxy.core.request.BaseRequest" type="BaseRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="validate" fulltype="void" type="void" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.core.utils" superclassfulltype="java.lang.Object" fulltype="mapproxy.core.utils.FileLock" type="FileLock">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="lock_file" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="timeout" fulltype="double" type="double" />
+			<field visibility="public" name="step" fulltype="double" type="double" />
+			<field visibility="public" name="_locked" fulltype="boolean" type="boolean" />
+			<field visibility="public" name="max_lock_time" fulltype="int" type="int" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="FileLock">
+				<comment>
+					<description>Creates a new instance of FileLock.</description>
+				</comment>
+				<params>
+					<param name="lock_file" fulltype="java.lang.String" type="String" />
+					<param name="timeout" fulltype="double" type="double" />
+					<param name="step" fulltype="double" type="double" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="FileLock">
+				<params>
+					<param name="lock_file" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.kml.server" superclassfulltype="java.lang.Object" fulltype="mapproxy.kml.server.KMLServer" type="KMLServer">
+		<comment>
+			<description>OGC KML 2.2 Server</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="KMLServer">
+				<comment>
+					<description>Creates a new instance of KMLServer.</description>
+				</comment>
+				<params>
+					<param name="service" fulltype="mapproxy.core.Service" type="Service" />
+				</params>
+			</constructor>
+			<method visibility="public" name="getCapabilities" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns a KML Document with links to individual layers in this service.
+   Note that this method was not part of the original mapproxy baseline.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getKML" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns a KML Superoverlay</description>
+				</comment>
+				<params>
+					<param name="url" fulltype="javaxt.utils.URL" type="javaxt.utils.URL" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.server" superclassfulltype="java.lang.Object" fulltype="mapproxy.server.RequestProcessor" type="RequestProcessor">
+		<implements>
+			<interface fulltype="java.lang.Runnable" type="Runnable" />
+		</implements>
+		<comment>
+			<description>Used to process HTTP Requests and send responses back to the client. As 
+   new http requests come in (via the processRequest method), they are added
+   to a queue (pool). Requests in the queue are processed by instances of
+   this class via the run method.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="RequestProcessor">
+				<comment>
+					<description>Creates a new instance of this class.</description>
+				</comment>
+			</constructor>
+			<method static="true" visibility="public" name="processRequest" fulltype="void" type="void">
+				<comment>
+					<description>Adds a new http request to the que/pool.</description>
+				</comment>
+				<params>
+					<param name="request" fulltype="java.nio.channels.SocketChannel" type="SocketChannel" />
+				</params>
+			</method>
+			<method visibility="public" name="run" fulltype="void" type="void">
+				<comment>
+					<description>Used to process remove a connection from the connection pool and invoke the 
+  HttpClient</description>
+				</comment>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.server" superclassfulltype="java.lang.Object" fulltype="mapproxy.server.RequestHeader" type="RequestHeader">
+		<comment>
+			<description>Used to encapsulate information found in an HTTP Request</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="RequestHeader">
+				<comment>
+					<description>Creates a new instance of RequestHeader</description>
+				</comment>
+				<params>
+					<param name="connection" fulltype="java.nio.channels.SocketChannel" type="SocketChannel" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.io.IOException" type="IOException" />
+				</exceptions>
+			</constructor>
+			<method visibility="public" name="getHttpVersion" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the HTTP version number passed in as part of the request</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getHeaders" fulltype="java.lang.String[]" type="String">
+				<comment>
+					<description>Returns the header portion of the request</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getPath" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the path specified in the first line of the request</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getMethod" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the methos specified in the first line of the request. 
+   Examples include GET, POST, PUT, HEAD, etc.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getHost" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="getPort" fulltype="int" type="int" />
+			<method visibility="public" name="isKeepAlive" fulltype="boolean" type="boolean">
+				<comment>
+					<description>Used to determine whether the Connection attribute is set to Keep-Alive</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getURL" fulltype="java.net.URL" type="URL">
+				<comment>
+					<description>Used to retrieve the requested url defined in the header</description>
+				</comment>
+			</method>
+			<method visibility="protected" name="setURL" fulltype="void" type="void">
+				<params>
+					<param name="url" fulltype="java.net.URL" type="URL" />
+				</params>
+			</method>
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns the full HTTP Request Header.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getProperty" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Used to extract a specific property from the http header. Note that there 
+  may exist more than one instance of a given property in which case, only 
+  the first instance is returned.</description>
+				</comment>
+				<params>
+					<param name="key" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Thread" visibility="public" package="mapproxy.server" superclassfulltype="java.lang.Thread" fulltype="mapproxy.server.HttpServer" type="HttpServer">
+		<comment>
+			<description>A lightwieght, multi-threaded web server originally designed to test 
+   HTTP requests and responses used in the javaxt.http package.
+
+   Adapted from Java Network Programming, 2nd Edition:
+   http://www.oreilly.com/catalog/javanp2/chapter/ch11.html#71137
+
+   Updated to use non-blocking sockets and IO streams.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="HttpServer">
+				<comment>
+					<description>Creates a new instance of this class. This method is called from the
+   main method.</description>
+					<attribute name="@param">
+						<description>port The port to use for the server</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="port" comment="The port to use for the server" fulltype="int" type="int" />
+					<param name="numThreads" fulltype="int" type="int" />
+				</params>
+				<exceptions>
+					<exception fulltype="java.io.IOException" type="IOException" />
+				</exceptions>
+			</constructor>
+			<method visibility="public" name="run" fulltype="void" type="void">
+				<comment>
+					<description>Used to start the web server (creates a thread pool and instantiates a 
+   socket listener). All inbound requests (socket connections) will be 
+   processed by the RequestProcessor class.</description>
+				</comment>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.tms" superclassfulltype="java.lang.Object" fulltype="mapproxy.tms.TMSClient" type="TMSClient">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="url" fulltype="java.lang.String" type="String" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="TMSClient">
+				<comment>
+					<description>Creates a new instance of TMSClient.</description>
+				</comment>
+				<params>
+					<param name="url" fulltype="java.lang.String" type="String" />
+					<param name="format" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<method visibility="public" name="get_tile" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="tile_coord" fulltype="int[]" type="int" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Layer" visibility="public" package="mapproxy.tms" superclassfulltype="mapproxy.core.layer.Layer" fulltype="mapproxy.tms.TileServiceLayer" type="TileServiceLayer">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileServiceLayer">
+				<comment>
+					<description>Creates a new instance of TileServiceLayer.</description>
+				</comment>
+				<params>
+					<param name="md" fulltype="mapproxy.core.layer.LayerMetaData" type="LayerMetaData" />
+					<param name="cache" fulltype="mapproxy.core.cache.Cache" type="Cache" />
+				</params>
+			</constructor>
+			<method visibility="protected" name="_bbox" fulltype="double[]" type="double" />
+			<method visibility="public" name="format_mime_type" fulltype="java.lang.String" type="String" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.tms" superclassfulltype="java.lang.Object" fulltype="mapproxy.tms.TileServiceGrid" type="TileServiceGrid">
+		<comment>
+			<description>Wraps a &quot;TileGrid&quot; and adds some &quot;TileService&quot; specific methods.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileServiceGrid">
+				<comment>
+					<description>Creates a new instance of TileServiceGrid.</description>
+				</comment>
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+				</params>
+			</constructor>
+			<method visibility="public" name="internal_level" fulltype="int" type="int">
+				<comment>
+					<description>returns the internal level</description>
+				</comment>
+				<params>
+					<param name="level" fulltype="int" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="bbox" returncomment="the bbox of all tiles of the first level" fulltype="double[]" type="double">
+				<comment>
+					<attribute name="@return">
+						<description>the bbox of all tiles of the first level</description>
+					</attribute>
+				</comment>
+			</method>
+			<method visibility="public" name="tile_sets" returncomment="the order and resolution of each tile set" fulltype="java.util.List" type="List">
+				<comment>
+					<description>Get all public tile sets for this layer.</description>
+					<attribute name="@return">
+						<description>the order and resolution of each tile set</description>
+					</attribute>
+				</comment>
+			</method>
+			<method visibility="public" name="internal_tile_coord" fulltype="int[]" type="int">
+				<comment>
+					<description>Converts public tile coords to internal tile coords.</description>
+					<attribute name="@param">
+						<description>tile_coord the public tile coord</description>
+					</attribute>
+					<attribute name="@param">
+						<description>use_profiles True if the tile service supports global
+                             profiles (see `mapproxy.core.server.TileServer`)</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="tile_coord" comment="the public tile coord" fulltype="int[]" type="int" />
+					<param name="use_profiles" comment="True if the tile service supports global
+                             profiles (see `mapproxy.core.server.TileServer`)" fulltype="boolean" type="boolean" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.tms" superclassfulltype="java.lang.Object" fulltype="mapproxy.tms.TileServer" type="TileServer">
+		<comment>
+			<description>A Tile Server. Supports strict TMS and non-TMS requests. The difference is
+   the support for profiles. The our internal tile cache starts with one tile
+   at the first level (like KML, etc.), but the global-geodetic and
+   global-mercator start with two and four tiles. The ``tile_request`` should
+   set ``use_profiles`` accordingly (eg. False if first level is one tile)</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TileServer">
+				<comment>
+					<description>Creates a new instance of TileServer.</description>
+				</comment>
+				<params>
+					<param name="service" fulltype="mapproxy.core.Service" type="Service" />
+				</params>
+			</constructor>
+			<method visibility="public" name="getCapabilities" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Returns an XML document suitable for a TileMapService request.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="getLayerInfo" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>Used to construct a response to a TMS Capabilities request for a given
+  layer.</description>
+				</comment>
+				<params>
+					<param name="layer" fulltype="mapproxy.core.Layer" type="Layer" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.tms" superclassfulltype="java.lang.Object" fulltype="mapproxy.tms.TileRequest" type="TileRequest">
+		<comment>
+			<description>Used to represent a TMS request.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="layer" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="format" fulltype="java.lang.String" type="String" />
+			<field visibility="public" name="tile" fulltype="int[]" type="int" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="TileRequest">
+				<comment>
+					<description>Creates a new instance of TileRequest. Assumes the url ends with a tms
+  request. Example: &quot;/layer/z/x/y.format&quot;</description>
+				</comment>
+				<params>
+					<param name="url" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<method visibility="public" name="id" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="toString" fulltype="java.lang.String" type="String" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="TileSource" visibility="public" package="mapproxy.tms.cache" superclassfulltype="mapproxy.core.cache.TileSource" fulltype="mapproxy.tms.cache.TMSTileSource" type="TMSTileSource">
+		<comment>
+			<description>This `TileSource` retrieves new tiles from a TMS server.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="TMSTileSource">
+				<comment>
+					<description>Creates a new instance of TMSTileSource.</description>
+				</comment>
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="url" fulltype="java.lang.String" type="String" />
+					<param name="format" fulltype="java.lang.String" type="String" />
+					<param name="inverse" fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="TMSTileSource">
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="url" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<method visibility="public" name="id" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="create_tile" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<comment>
+					<description>Retrieve the requested `tile`.</description>
+				</comment>
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+					<param name="tile_map" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="TileSource" visibility="public" package="mapproxy.wms.cache" superclassfulltype="mapproxy.core.cache.TileSource" fulltype="mapproxy.wms.cache.WMSTileSource" type="WMSTileSource">
+		<comment>
+			<description>This TileSource retrieves new tiles from a WMS server.
+   This class is able to request maps that are larger than one tile and split
+   the large map into multiple tiles. The meta_size defines how many tiles
+   should be generated per request.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="WMSTileSource">
+				<comment>
+					<description>Creates a new instance of the WMSTileSource.</description>
+					<attribute name="@param">
+						<description>grid the associated grid</description>
+					</attribute>
+					<attribute name="@param">
+						<description>clients WMSClient for each distinct WMS source
+   [&quot;mapproxy.wms.client.WMSClient&quot;,...]</description>
+					</attribute>
+					<attribute name="@param">
+						<description>format internal image format. if not set use format from first WMS
+   client</description>
+					</attribute>
+					<attribute name="@param">
+						<description>meta_size the number of tiles to get per request (x_size, y_size)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>meta_buffer the buffer size in pixel that is added to each grid.
+   the number is added to all four borders. this buffer may improve the
+   handling of labels overlapping (meta)tile borders.
+        :type meta_buffer: pixel</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="grid" comment="the associated grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="clients" comment="WMSClient for each distinct WMS source
+   [&quot;mapproxy.wms.client.WMSClient&quot;,...]" fulltype="mapproxy.wms.client.WMSClient[]" type="WMSClient" />
+					<param name="format" comment="internal image format. if not set use format from first WMS
+   client" fulltype="java.lang.String" type="String" />
+					<param name="meta_buffer" comment="the buffer size in pixel that is added to each grid.
+   the number is added to all four borders. this buffer may improve the
+   handling of labels overlapping (meta)tile borders.
+        :type meta_buffer: pixel" fulltype="int" type="int" />
+					<param name="meta_size" comment="the number of tiles to get per request (x_size, y_size)" fulltype="int[]" type="int" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="WMSTileSource">
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="clients" fulltype="mapproxy.wms.client.WMSClient[]" type="WMSClient" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="WMSTileSource">
+				<params>
+					<param name="grid" fulltype="mapproxy.core.grid.TileGrid" type="TileGrid" />
+					<param name="client" fulltype="mapproxy.wms.client.WMSClient" type="WMSClient" />
+				</params>
+			</constructor>
+			<method visibility="public" name="id" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="lock_filename" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+				</params>
+			</method>
+			<method visibility="public" name="create_tile" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection">
+				<params>
+					<param name="tile" fulltype="mapproxy.core.cache._Tile" type="_Tile" />
+					<param name="tile_map" fulltype="mapproxy.core.cache.TileCollection" type="TileCollection" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.wms.client" superclassfulltype="java.lang.Object" fulltype="mapproxy.wms.client.WMSClient" type="WMSClient">
+		<comment>
+			<description>Client for WMS requests.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="request_template" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="WMSClient">
+				<comment>
+					<description>Creates a new instance of WMSClient.</description>
+					<attribute name="@param">
+						<description>request_template a request that will be used as a template for new
+    requests</description>
+					</attribute>
+					<attribute name="@param">
+						<description>client_request function is called for each client request. gets the
+    request_template and the according request. should return a new request
+    object that is used for this request.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="request_template" comment="a request that will be used as a template for new
+    requests" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+					<param name="client_request" comment="function is called for each client request. gets the
+    request_template and the according request. should return a new request
+    object that is used for this request." fulltype="java.lang.Object" type="Object" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="WMSClient">
+				<params>
+					<param name="request_template" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</constructor>
+			<method visibility="public" name="get_map" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="get_info" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="_transform_fi_request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Layer" visibility="public" package="mapproxy.wms.layer" superclassfulltype="mapproxy.core.layer.Layer" fulltype="mapproxy.wms.layer.WMSLayer" type="WMSLayer">
+		<comment>
+			<description>Base class for all renderable layers.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="WMSLayer">
+				<comment>
+					<description>Creates a new instance of Layer.</description>
+				</comment>
+				<params>
+					<param name="md" fulltype="mapproxy.core.layer.LayerMetaData" type="LayerMetaData" />
+				</params>
+			</constructor>
+			<method visibility="public" name="info" fulltype="java.lang.Object" type="Object">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="has_info" fulltype="boolean" type="boolean" />
+			<method visibility="public" name="caches" fulltype="mapproxy.core.cache.Cache[]" type="Cache">
+				<params>
+					<param name="_request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="WMSLayer" visibility="public" package="mapproxy.wms.layer" superclassfulltype="mapproxy.wms.layer.WMSLayer" fulltype="mapproxy.wms.layer.WMSCacheLayer" type="WMSCacheLayer">
+		<comment>
+			<description>This is a layer that caches the data.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="WMSCacheLayer">
+				<comment>
+					<description>Creates a new instance of WMSCacheLayer.</description>
+				</comment>
+				<params>
+					<param name="cache" fulltype="mapproxy.core.cache.Cache" type="Cache" />
+					<param name="fi_source" fulltype="mapproxy.wms.layer.FeatureInfoSource" type="FeatureInfoSource" />
+				</params>
+			</constructor>
+			<method visibility="public" name="_bbox" fulltype="double[]" type="double" />
+			<method visibility="public" name="_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+			<method visibility="public" name="has_info" fulltype="boolean" type="boolean" />
+			<method visibility="public" name="info" fulltype="mapproxy.core.Generator" type="Generator">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="caches" fulltype="mapproxy.core.cache.Cache[]" type="Cache">
+				<params>
+					<param name="_request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="render" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="map_request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="WMSLayer" visibility="public" package="mapproxy.wms.layer" superclassfulltype="mapproxy.wms.layer.WMSLayer" fulltype="mapproxy.wms.layer.VLayer" type="VLayer">
+		<comment>
+			<description>A layer with multiple sources.</description>
+		</comment>
+		<fields>
+			<field visibility="protected" name="sources" fulltype="mapproxy.wms.layer.WMSLayer[]" type="WMSLayer" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="VLayer">
+				<comment>
+					<description>Creates a new instance of VLayer.</description>
+					<attribute name="@param">
+						<description>md the layer metadata</description>
+					</attribute>
+					<attribute name="@param">
+						<description>sources a list with layers. Type = [`WMSLayer`]</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="md" comment="the layer metadata" fulltype="mapproxy.core.layer.LayerMetaData" type="LayerMetaData" />
+					<param name="sources" comment="a list with layers. Type = [`WMSLayer`]" fulltype="mapproxy.wms.layer.WMSLayer[]" type="WMSLayer" />
+				</params>
+			</constructor>
+			<method visibility="protected" name="_bbox" fulltype="double[]" type="double" />
+			<method visibility="protected" name="_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+			<method visibility="public" name="render" fulltype="mapproxy.core.Generator" type="Generator">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="caches" fulltype="mapproxy.core.cache.Cache[]" type="Cache">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="has_info" fulltype="boolean" type="boolean" />
+			<method visibility="public" name="info" fulltype="mapproxy.core.Generator" type="Generator">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="WMSLayer" visibility="public" package="mapproxy.wms.layer" superclassfulltype="mapproxy.wms.layer.WMSLayer" fulltype="mapproxy.wms.layer.MultiLayer" type="MultiLayer">
+		<comment>
+			<description>This layer dispatches requests to other layers.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="MultiLayer">
+				<comment>
+					<description>Creates a new instance of MultiLayer.</description>
+				</comment>
+				<params>
+					<param name="layers" fulltype="mapproxy.wms.layer.WMSLayer[]" type="WMSLayer" />
+					<param name="md" fulltype="mapproxy.core.layer.LayerMetaData" type="LayerMetaData" />
+				</params>
+			</constructor>
+			<method static="true" visibility="public" name="dispatcher" fulltype="mapproxy.wms.layer.WMSLayer" type="WMSLayer">
+				<params>
+					<param name="layers" fulltype="mapproxy.wms.layer.WMSLayer[]" type="WMSLayer" />
+					<param name="srs" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="_bbox" fulltype="double[]" type="double" />
+			<method visibility="public" name="_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+			<method visibility="public" name="render" fulltype="java.lang.Object" type="Object">
+				<params>
+					<param name="map_request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="caches" fulltype="mapproxy.core.cache.Cache[]" type="Cache">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="has_info" fulltype="boolean" type="boolean" />
+			<method visibility="public" name="info" fulltype="java.lang.Object" type="Object">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.wms.layer" superclassfulltype="java.lang.Object" fulltype="mapproxy.wms.layer.FeatureInfoSource" type="FeatureInfoSource">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="FeatureInfoSource">
+				<comment>
+					<description>Creates a new instance of FeatureInfoSource.</description>
+				</comment>
+				<params>
+					<param name="fi_sources" fulltype="mapproxy.wms.client.WMSClient[]" type="WMSClient" />
+				</params>
+			</constructor>
+			<method visibility="public" name="info" fulltype="mapproxy.core.Generator" type="Generator">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="WMSLayer" visibility="public" package="mapproxy.wms.layer" superclassfulltype="mapproxy.wms.layer.WMSLayer" fulltype="mapproxy.wms.layer.DirectLayer" type="DirectLayer">
+		<comment>
+			<description>A layer that passes the request to a wms.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="DirectLayer">
+				<comment>
+					<description>Creates a new instance of DirectLayer.</description>
+				</comment>
+				<params>
+					<param name="wms" fulltype="mapproxy.wms.client.WMSClient" type="WMSClient" />
+					<param name="queryable" fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<method visibility="public" name="_bbox" fulltype="double[]" type="double" />
+			<method visibility="public" name="_srs" fulltype="mapproxy.core.SRS" type="SRS" />
+			<method visibility="public" name="render" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="has_info" fulltype="boolean" type="boolean" />
+			<method visibility="public" name="info" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+	<jelclass superclass="BaseRequest" visibility="public" package="mapproxy.wms.request" superclassfulltype="mapproxy.core.request.BaseRequest" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest">
+		<fields>
+			<field visibility="protected" name="fixed_params" fulltype="mapproxy.core.request.RequestParams" type="RequestParams">
+				<comment>
+					<description>parameters that are fixed for a request</description>
+				</comment>
+			</field>
+			<field visibility="protected" name="expected_param" fulltype="java.lang.String[]" type="String">
+				<comment>
+					<description>required parameters, used for validating</description>
+				</comment>
+			</field>
+			<field visibility="protected" name="request_handler_name" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>the name of the server handler</description>
+				</comment>
+			</field>
+		</fields>
+		<methods>
+			<constructor visibility="public" name="WMSRequest">
+				<comment>
+					<description>Creates a new instance of WMSRequest.</description>
+					<attribute name="@param">
+						<description>param A dict, `NoCaseMultiDict` or ``RequestParams``.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>url The service URL for the request.</description>
+					</attribute>
+					<attribute name="@param">
+						<description>validate True if the request should be validated after initialization.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="param" comment="A dict, `NoCaseMultiDict` or ``RequestParams``." fulltype="java.lang.Object" type="Object" />
+					<param name="url" comment="The service URL for the request." fulltype="java.lang.String" type="String" />
+					<param name="validate" comment="True if the request should be validated after initialization." fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<method visibility="public" name="copy" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest">
+				<comment>
+					<description>Creates an exact copy of this class</description>
+				</comment>
+			</method>
+			<method visibility="public" name="copy_with_request_params" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest">
+				<comment>
+					<description>Return a copy of this request and overwrite all param values from `req`.</description>
+				</comment>
+				<params>
+					<param name="req" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="url" fulltype="void" type="void">
+				<params>
+					<param name="url" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="adapt_to_111" fulltype="void" type="void" />
+			<method visibility="public" name="adapt_params_to_version" fulltype="mapproxy.core.request.RequestParams" type="RequestParams" />
+			<method visibility="public" name="query_string" fulltype="java.lang.String" type="String" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="RequestParams" visibility="public" package="mapproxy.wms.request" superclassfulltype="mapproxy.core.request.RequestParams" fulltype="mapproxy.wms.request.WMSMapRequestParams" type="WMSMapRequestParams">
+		<comment>
+			<description>This class represents key-value parameters for WMS map requests. All values
+   can be accessed as a property. Some properties return processed values.
+   &quot;size&quot; returns a tuple of the width and height, &quot;layers&quot; returns an
+   iterator of all layers, etc.</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="WMSMapRequestParams">
+				<comment>
+					<description>Creates a new instance of WMSMapRequestParams.</description>
+				</comment>
+				<params>
+					<param name="param" fulltype="mapproxy.core.request.NoCaseMultiDict" type="NoCaseMultiDict" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="WMSMapRequestParams" />
+			<method visibility="public" name="layers" fulltype="java.lang.String[]" type="String">
+				<comment>
+					<description>List with all layer names.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="bbox" fulltype="double[]" type="double">
+				<comment>
+					<description>&quot;bbox&quot; as a tuple (minx, miny, maxx, maxy).</description>
+				</comment>
+			</method>
+			<method visibility="public" name="bbox" fulltype="void" type="void">
+				<params>
+					<param name="value" fulltype="double[]" type="double" />
+				</params>
+			</method>
+			<method visibility="public" name="bbox" fulltype="void" type="void">
+				<params>
+					<param name="value" fulltype="java.lang.String" type="String" />
+				</params>
+			</method>
+			<method visibility="public" name="size" fulltype="int[]" type="int">
+				<comment>
+					<description>Size of the request in pixel as a tuple (width, height), or None if one
+  is missing.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="size" fulltype="void" type="void">
+				<params>
+					<param name="value" fulltype="int[]" type="int" />
+				</params>
+			</method>
+			<method visibility="public" name="srs" fulltype="java.lang.String" type="String" />
+			<method visibility="public" name="transparent" fulltype="boolean" type="boolean">
+				<comment>
+					<description>``True`` if transparent is set to true, otherwise ``False``.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="bgcolor" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>The background color in PIL format (#rrggbb). Defaults to &apos;#ffffff&apos;.</description>
+				</comment>
+			</method>
+			<method visibility="public" name="format" fulltype="java.lang.String" type="String">
+				<comment>
+					<description>The requested format as string (w/o any &apos;image/&apos;, &apos;text/&apos;, etc prefixes)</description>
+				</comment>
+			</method>
+			<method visibility="public" name="format_mime_type" fulltype="java.lang.String" type="String" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="WMSRequest" visibility="public" package="mapproxy.wms.request" superclassfulltype="mapproxy.wms.request.WMSRequest" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest">
+		<comment>
+			<description>Base class for all WMS GetMap requests.</description>
+		</comment>
+		<fields>
+			<field visibility="public" name="params" fulltype="mapproxy.wms.request.WMSMapRequestParams" type="WMSMapRequestParams" />
+		</fields>
+		<methods>
+			<constructor visibility="public" name="WMSMapRequest">
+				<comment>
+					<description>Creates a new instance of WMSMapRequest.</description>
+				</comment>
+				<params>
+					<param name="param" fulltype="java.lang.Object" type="Object" />
+					<param name="url" fulltype="java.lang.String" type="String" />
+					<param name="validate" fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="WMSMapRequest" />
+			<method visibility="public" name="validate" fulltype="void" type="void" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="WMSMapRequest" visibility="public" package="mapproxy.wms.request" superclassfulltype="mapproxy.wms.request.WMSMapRequest" fulltype="mapproxy.wms.request.WMS111MapRequest" type="WMS111MapRequest">
+		<comment>
+			<description>Used to represent a WMS 1.1.1 Request</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="WMS111MapRequest">
+				<comment>
+					<description>Creates a new instance of WMS111MapRequest.</description>
+					<attribute name="@param">
+						<description>param RequestParams (e.g. WMSMapRequestParams)</description>
+					</attribute>
+					<attribute name="@param">
+						<description>url The url to the WMS minus the typical WMS parameters (bbox, srs,
+  width, height, service, request, version, etc).</description>
+					</attribute>
+					<attribute name="@param">
+						<description>validate Specify whether to validate the WMS request. Set to false
+  by default.</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="param" comment="RequestParams (e.g. WMSMapRequestParams)" fulltype="java.lang.Object" type="Object" />
+					<param name="url" comment="The url to the WMS minus the typical WMS parameters (bbox, srs,
+  width, height, service, request, version, etc)." fulltype="java.lang.String" type="String" />
+					<param name="validate" comment="Specify whether to validate the WMS request. Set to false
+  by default." fulltype="boolean" type="boolean" />
+				</params>
+			</constructor>
+			<constructor visibility="public" name="WMS111MapRequest">
+				<params>
+					<param name="param" fulltype="java.lang.Object" type="Object" />
+					<param name="url" fulltype="java.lang.String" type="String" />
+				</params>
+			</constructor>
+			<method visibility="public" name="adapt_to_111" fulltype="void" type="void" />
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.wms.request" superclassfulltype="java.lang.Object" fulltype="mapproxy.wms.request.WMS100MapRequest" type="WMS100MapRequest">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="WMS100MapRequest">
+				<comment>
+					<description>Creates a new instance of WMS100MapRequest.</description>
+				</comment>
+			</constructor>
+		</methods>
+	</jelclass>
+	<jelclass superclass="Object" visibility="public" package="mapproxy.wms.server" superclassfulltype="java.lang.Object" fulltype="mapproxy.wms.server.WMSServer" type="WMSServer">
+		<comment>
+			<description>Enter class description here</description>
+		</comment>
+		<methods>
+			<constructor visibility="public" name="WMSServer">
+				<comment>
+					<description>Creates a new instance of WMSServer.</description>
+					<attribute name="@param">
+						<description>md proxy_conf.service_md</description>
+					</attribute>
+					<attribute name="@param">
+						<description>request_parser request_parser or wms_request</description>
+					</attribute>
+				</comment>
+				<params>
+					<param name="layers" fulltype="java.util.HashMap" type="HashMap" />
+					<param name="md" comment="proxy_conf.service_md" fulltype="mapproxy.core.request.NoCaseMultiDict" type="NoCaseMultiDict" />
+					<param name="layer_merger" fulltype="mapproxy.core.image.LayerMerger" type="LayerMerger" />
+					<param name="request_parser" comment="request_parser or wms_request" fulltype="mapproxy.wms.request.WMSRequest" type="WMSRequest" />
+				</params>
+			</constructor>
+			<method visibility="public" name="map" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="map_request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="capabilities" fulltype="javaxt.io.Image" type="javaxt.io.Image">
+				<params>
+					<param name="map_request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="featureinfo" fulltype="java.lang.String" type="String">
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="check_request" fulltype="void" type="void">
+				<comment>
+					<description>Check whether there are query layers in the request. Throw an error if the
+  layer is not found.</description>
+				</comment>
+				<params>
+					<param name="request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+			<method visibility="public" name="_service_md" fulltype="mapproxy.core.request.NoCaseMultiDict" type="NoCaseMultiDict">
+				<params>
+					<param name="map_request" fulltype="mapproxy.wms.request.WMSMapRequest" type="WMSMapRequest" />
+				</params>
+			</method>
+		</methods>
+	</jelclass>
+</jel>

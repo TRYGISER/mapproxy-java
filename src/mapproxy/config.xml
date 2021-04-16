@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapproxy>
+
+    <service>
+        <name>MapProxy Server 0.8.1 RC4</name>
+        <description>Map proxy and tile cache for web map services</description>
+        <port>9080</port>
+        <numThreads>200</numThreads>
+    </service>
+
+    <layers>
+
+       <Layer>
+          <Name>Default Basemap</Name>
+          <Description>Reference map of the world</Description>
+          <Host>
+              <BaseRequest protocol="WMS">
+              <![CDATA[
+                  http://localhost:6277/cgi-bin/mapserv.exe?map=/data/world.map&
+              ]]>
+              </BaseRequest>
+              <Layers>grid,polboundaries,hydro,cities</Layers>
+          </Host>
+
+          <FileCache>
+              <CacheDirectory>/temp/mapproxy/world.map/</CacheDirectory>
+              <Format>png</Format>
+              <SRS>EPSG:4326</SRS>
+              <TileSize>256,256</TileSize>
+          </FileCache>
+       </Layer>
+
+       <Layer>
+           <Name>Country Labels</Name>
+           <Host>
+              <BaseRequest protocol="WMS">
+              <![CDATA[
+                  http://localhost:6277/cgi-bin/mapserv.exe?map=/data/world.map&
+              ]]>
+              </BaseRequest>
+              <Layers>country_names</Layers>
+           </Host>
+       </Layer>
+
+
+       <Layer>
+           <Name>USA_Topo_Maps</Name>
+           <Host>
+              <BaseRequest protocol="MapServer">
+              <![CDATA[
+                  http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer
+              ]]>
+              </BaseRequest>
+              <Layers>0</Layers>
+           </Host>
+       </Layer>
+<!--
+       <Layer>
+           <Name>ESRI_StateCityHighway_USA</Name>
+           <Host>
+              <BaseRequest protocol="MapServer">
+              <![CDATA[
+                  http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StateCityHighway_USA/MapServer
+              ]]>
+              </BaseRequest>
+              <Layers>states</Layers>
+           </Host>
+       </Layer>
+
+
+
+
+
+       <layer>
+          <name>Open Street Maps</name>
+          <host>
+              <BaseRequest protocol="WMS">
+              <![CDATA[
+                  http://data1.geoposer.com:443/server/services/request.php?jname=/wms.img&
+              ]]>
+              </BaseRequest>
+              <layers>osm</layers>
+          </host>
+
+          <FileCache>
+              <CacheDirectory>/temp/mapproxy/osm/</CacheDirectory>
+              <Format>png</Format>
+              <SRS>EPSG:4326</SRS>
+              <TileSize>256,256</TileSize>
+          </FileCache>
+
+       </layer>
+
+       
+       <layer>
+           <name>MODIS</name>
+           <CacheDir>/temp/mapproxy/modis/</CacheDir>
+           <CacheFormat>jpg</CacheFormat>
+           <Service>
+           <![CDATA[
+                http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/World/MODIS/ImageServer?f=json&pretty=true
+           ]]>
+           </Service>
+       </layer>
+
+       <layer>
+           <name>States</name>
+           <CacheDir>/temp/mapproxy/states/</CacheDir>
+           <CacheFormat>jpg</CacheFormat>
+           <Service>
+           <![CDATA[
+                http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StateCityHighway_USA/MapServer?f=json&pretty=true
+           ]]>
+           </Service>
+           <Layers>states</Layers>
+       </layer>
+      
+
+
+
+-->
+
+    </layers>
+
+
+    <html>
+      <head>
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+       <title>@SERVICENAME</title>
+       <style type="text/css">
+        body {
+           background-color: #FFFFFF; margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px;
+           font-family:arial,helvetica,sans-serif; font-size: 10pt;color:#000000;text-decoration:none;
+           text-align:left;font-weight: normal;
+        }
+
+        a, a:visited {color:#3366CC; text-decoration:none;}
+        a:hover {color:#FF3300; text-decoration:underline;}
+
+
+        h1 { font-size: 18pt; font-weight: bold; margin-top: 12px; margin-bottom: 5px; margin-left: 0px; margin-right: 0px; padding-bottom: 10px; padding-left:10px; border-bottom: 1px solid #003366; color: #003366; }
+        h2 { font-size: 12pt; font-weight: bold; margin-top: 10px; margin-bottom: 3px; margin-left: 0px; margin-right: 0px; padding-bottom: 3px; color: #003366; }
+
+       </style>
+     </head>
+     <body>
+       <h1>@SERVICENAME</h1>
+       <div style="margin:0px 20px 20px 20px;">
+           @SERVICEDESCRIPTION
+           <h2>Avaliable Layers</h2>
+           <ul>
+               @LAYERS
+           </ul>
+           <h2>Avaliable Services</h2>
+           <ul>
+               @SERVICES
+           </ul>
+       </div>
+     </body>
+    </html>
+
+</mapproxy>
