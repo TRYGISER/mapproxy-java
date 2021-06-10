@@ -11,7 +11,7 @@
     <layers>
 
        <Layer>
-          <Name>Default Basemap</Name>
+          <Name>DefaultBasemap</Name>
           <Description>Reference map of the world</Description>
           <Host>
               <BaseRequest protocol="WMS">
@@ -31,7 +31,7 @@
        </Layer>
 
        <Layer>
-           <Name>Country Labels</Name>
+           <Name>CountryLabels</Name>
            <Host>
               <BaseRequest protocol="WMS">
               <![CDATA[
@@ -91,7 +91,7 @@
 
        </layer>
 
-       
+
        <layer>
            <name>MODIS</name>
            <CacheDir>/temp/mapproxy/modis/</CacheDir>
@@ -114,7 +114,7 @@
            </Service>
            <Layers>states</Layers>
        </layer>
-      
+
 
 
 
